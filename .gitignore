@@ -1,0 +1,14 @@
+# Build output
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+__pycache__/
+
+# Release artifacts are uploaded to GitHub Releases, not committed
+dist/
+
+# Original course material with real names and content: kept local only.
+# Use examples/green-streets/ (fictional) for public tests.
+example/

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" width="432" height="432">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A1D25"/>
+      <stop offset="1" stop-color="#0B0C10"/>
+    </linearGradient>
+    <linearGradient id="ember" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFC567"/>
+      <stop offset="1" stop-color="#FF7A35"/>
+    </linearGradient>
+  </defs>
+  <rect width="108" height="108" rx="24" fill="url(#bg)"/>
+  <!-- helix: the outer rim of the ear -->
+  <path d="M38,50 C38,35 48,25 61,25 C73,25 81,34 81,46 C81,55 76,60 72,64 C68,68 67,71 67,76 C67,82 62,86 56,86 C51,86 48,83 47,80"
+        fill="none" stroke="url(#ember)" stroke-width="8" stroke-linecap="round"/>
+  <!-- antihelix -->
+  <path d="M51,49 C51,41 56,37 61,37 C67,37 70,42 70,46 C70,51 66,54 62,57"
+        fill="none" stroke="#F3EFE7" stroke-opacity="0.9" stroke-width="5.5" stroke-linecap="round"/>
+  <!-- the cue: a point of sound arriving at the ear -->
+  <circle cx="25" cy="67" r="4.5" fill="#F3EFE7"/>
+  <path d="M33,59 A10,10 0 0 1 33,75" fill="none" stroke="#F3EFE7" stroke-opacity="0.45" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

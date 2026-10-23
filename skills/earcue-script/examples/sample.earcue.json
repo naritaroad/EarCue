@@ -1,0 +1,52 @@
+{
+  "format": "earcue/1",
+  "title": "Green Streets at Night · P2 Background (excerpt)",
+  "speaker": "P2 Mina Park",
+  "lang": "en-US",
+  "tags": [
+    "demo",
+    "paper-review",
+    "urban-heat",
+    "co-presenting"
+  ],
+  "sections": [
+    {
+      "title": "Why are summer nights getting hotter?",
+      "slide": "P2",
+      "minutes": 2.5,
+      "cues": [
+        {
+          "partner": "P1 Alex Rivera",
+          "text": "Quick poll first. Raise your hand if you could not sleep because of the heat last summer. That is a lot of hands."
+        },
+        {
+          "text": "I am one of them. Alex, did you know the night is where cities and the countryside differ most?",
+          "note": "我也是其中一個。Alex，你知道城市和鄉下差最多的其實是晚上嗎？"
+        },
+        {
+          "partner": "P1 Alex Rivera",
+          "text": "Really? I thought the afternoon was the worst part."
+        },
+        {
+          "text": "The afternoon is hot everywhere. But after sunset, the countryside cools down fast. The city does not.",
+          "note": "下午到處都熱。但太陽下山以後，鄉下很快就涼了，城市卻不會。"
+        },
+        {
+          "partner": "P1 Alex Rivera",
+          "text": "Why not?"
+        }
+      ]
+    },
+    {
+      "title": "Two research questions",
+      "slide": "P4",
+      "minutes": 1,
+      "cues": [
+        {
+          "text": "To answer them, they put sensors on sixty streets for a whole summer. Leo will tell you how.",
+          "note": "為了回答這些問題，他們在六十條街上放了一整個夏天的感測器。接下來請 Leo 說明他們怎麼做。"
+        }
+      ]
+    }
+  ]
+}

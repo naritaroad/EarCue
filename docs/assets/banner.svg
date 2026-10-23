@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#171A21"/>
+      <stop offset="1" stop-color="#0B0C10"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.55" r="0.5">
+      <stop offset="0" stop-color="#FF8A3D" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#FF8A3D" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ember" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFC567"/>
+      <stop offset="1" stop-color="#FF7A35"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1F232C"/>
+      <stop offset="1" stop-color="#0E1015"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="420" fill="url(#bg)"/>
+  <rect width="1280" height="420" fill="url(#glow)"/>
+
+  <!-- logo tile -->
+  <g transform="translate(96,96)">
+    <rect width="108" height="108" rx="24" fill="url(#tile)" stroke="#2A2E39"/>
+    <g transform="translate(2,0)">
+      <path d="M38,50 C38,35 48,25 61,25 C73,25 81,34 81,46 C81,55 76,60 72,64 C68,68 67,71 67,76 C67,82 62,86 56,86 C51,86 48,83 47,80"
+            fill="none" stroke="url(#ember)" stroke-width="8" stroke-linecap="round"/>
+      <path d="M51,49 C51,41 56,37 61,37 C67,37 70,42 70,46 C70,51 66,54 62,57"
+            fill="none" stroke="#F3EFE7" stroke-opacity="0.9" stroke-width="5.5" stroke-linecap="round"/>
+      <circle cx="25" cy="67" r="4.5" fill="#F3EFE7"/>
+      <path d="M33,59 A10,10 0 0 1 33,75" fill="none" stroke="#F3EFE7" stroke-opacity="0.45" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- wordmark -->
+  <text x="96" y="282" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif" font-size="76" font-weight="700" fill="#F3EFE7" letter-spacing="-1.5">EarCue</text>
+  <text x="96" y="330" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif" font-size="26" fill="#9096A6">Your script in your ear. One thumb press for the next line.</text>
+  <text x="96" y="372" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#FFB547" letter-spacing="3">ANDROID · OFFLINE · 10 LANGUAGES</text>
+
+  <!-- sound waves toward the phone -->
+  <g fill="none" stroke="#F3EFE7" stroke-linecap="round">
+    <path d="M856,170 A60,60 0 0 0 856,250" stroke-opacity="0.12" stroke-width="5"/>
+    <path d="M830,150 A88,88 0 0 0 830,270" stroke-opacity="0.2" stroke-width="5"/>
+  </g>
+
+  <!-- phone -->
+  <g transform="translate(900,46) rotate(6 130 170)">
+    <rect width="260" height="352" rx="38" fill="#14161C" stroke="#2A2E39" stroke-width="3"/>
+    <rect x="18" y="24" width="224" height="16" rx="8" fill="#1B1E26"/>
+    <rect x="18" y="52" width="180" height="12" rx="6" fill="#2A2E39"/>
+    <rect x="18" y="74" width="150" height="12" rx="6" fill="#2A2E39"/>
+    <!-- deck -->
+    <rect x="18" y="108" width="74" height="96" rx="18" fill="#1B1E26" stroke="#2A2E39"/>
+    <path d="M47,141 L67,156 L47,171 Z" fill="#F3EFE7"/>
+    <rect x="18" y="212" width="74" height="122" rx="18" fill="#1B1E26" stroke="#2A2E39"/>
+    <path d="M70,258 L52,273 L70,288 Z" fill="#F3EFE7"/>
+    <rect x="47" y="258" width="4" height="30" rx="2" fill="#F3EFE7"/>
+    <rect x="100" y="108" width="142" height="226" rx="22" fill="url(#ember)"/>
+    <path d="M150,198 L182,221 L150,244 Z" fill="#0B0C10"/>
+    <rect x="188" y="198" width="6" height="46" rx="3" fill="#0B0C10"/>
+  </g>
+
+  <!-- earphone -->
+  <g transform="translate(762,196) rotate(-12)">
+    <rect x="-11" y="10" width="22" height="92" rx="11" fill="#22262F" stroke="#2A2E39" stroke-width="2"/>
+    <ellipse cx="0" cy="0" rx="30" ry="27" fill="#22262F" stroke="#FFB547" stroke-width="4"/>
+    <ellipse cx="-6" cy="-2" rx="11" ry="10" fill="#FFB547"/>
+  </g>
+</svg>

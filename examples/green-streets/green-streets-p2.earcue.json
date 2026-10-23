@@ -1,0 +1,105 @@
+{
+  "format": "earcue/1",
+  "title": "Green Streets at Night · P2 Background",
+  "speaker": "P2 Mina Park",
+  "lang": "en-US",
+  "tags": [
+    "demo",
+    "paper-review",
+    "urban-heat",
+    "co-presenting"
+  ],
+  "source": "Green Streets Transcript (Bilingual).docx",
+  "sections": [
+    {
+      "title": "Why are summer nights getting hotter?",
+      "slide": "P2",
+      "minutes": 2.5,
+      "cues": [
+        {
+          "partner": "P1 Alex Rivera",
+          "text": "Quick poll first. Raise your hand if you could not sleep because of the heat last summer. That is a lot of hands."
+        },
+        {
+          "text": "I am one of them. Alex, did you know the night is where cities and the countryside differ most?",
+          "note": "我也是其中一個。Alex，你知道城市和鄉下差最多的其實是晚上嗎？"
+        },
+        {
+          "partner": "P1 Alex Rivera",
+          "text": "Really? I thought the afternoon was the worst part."
+        },
+        {
+          "text": "The afternoon is hot everywhere. But after sunset, the countryside cools down fast. The city does not.",
+          "note": "下午到處都熱。但太陽下山以後，鄉下很快就涼了，城市卻不會。"
+        },
+        {
+          "partner": "P1 Alex Rivera",
+          "text": "Why not?"
+        },
+        {
+          "text": "Concrete and asphalt store heat during the day. At night they slowly give it back, like a warm stone in your hand.",
+          "note": "水泥和柏油白天把熱存起來，晚上再慢慢放出來，就像手裡握著一顆溫熱的石頭。"
+        },
+        {
+          "text": "Scientists call this the urban heat island. In some cities, nights are now five degrees warmer than nearby fields.",
+          "note": "科學家把這叫做都市熱島。有些城市的夜晚，現在比附近的田野熱上五度。"
+        },
+        {
+          "partner": "P1 Alex Rivera",
+          "text": "So it is not just about comfort?"
+        },
+        {
+          "text": "No. Hot nights mean poor sleep, and older people are at real risk. That is why this paper looks at the night, not the day.",
+          "note": "不只。熱夜代表睡不好，年長者更有真正的健康風險。這就是為什麼這篇論文看的是夜晚，而不是白天。"
+        }
+      ]
+    },
+    {
+      "title": "Trees as the city's air conditioner",
+      "slide": "P3",
+      "minutes": 2,
+      "cues": [
+        {
+          "partner": "P1 Alex Rivera",
+          "text": "So how do trees fit in, Mina?",
+          "note": "Hand-over question"
+        },
+        {
+          "text": "Trees help in two ways. First, shade. A shaded road stores much less heat during the day, so it has less to give back at night.",
+          "note": "樹有兩種幫忙的方式。第一是遮蔭。有遮蔭的路面白天存的熱少很多，晚上要放的熱也就少。"
+        },
+        {
+          "text": "Second, water. Leaves release water into the air. That works like sweat on your skin, and it cools the air around the tree.",
+          "note": "第二是水分。葉子會把水分釋放到空氣中，就像皮膚上的汗，讓樹周圍的空氣變涼。"
+        },
+        {
+          "text": "We know this works in the afternoon. But at night there is no sun to block, and leaves release much less water.",
+          "note": "我們知道這在下午有效。但晚上沒有太陽可以擋，葉子釋放的水分也少很多。"
+        },
+        {
+          "text": "So the open question was: do trees still cool a street after dark? And does one tree help, or do you need many?",
+          "note": "所以還沒有答案的問題是：天黑以後，樹還能讓街道變涼嗎？一棵樹就有用，還是需要很多棵？"
+        }
+      ]
+    },
+    {
+      "title": "Two research questions",
+      "slide": "P4",
+      "minutes": 1,
+      "cues": [
+        {
+          "text": "The authors ask two questions. RQ1: does more tree cover on a street mean a cooler night on that street?",
+          "note": "作者問了兩個問題。RQ1：一條街的樹冠越多，那條街的夜晚就越涼嗎？"
+        },
+        {
+          "text": "RQ2: does it matter how the trees are placed? For example, a few big trees in a row, or many small trees spread out?",
+          "note": "RQ2：樹怎麼種有差嗎？例如一排幾棵大樹，還是很多小樹分散種？"
+        },
+        {
+          "text": "To answer them, they put sensors on sixty streets for a whole summer. Leo will tell you how.",
+          "note": "為了回答這些問題，他們在六十條街上放了一整個夏天的感測器。接下來請 Leo 說明他們怎麼做。"
+        }
+      ]
+    }
+  ]
+}
