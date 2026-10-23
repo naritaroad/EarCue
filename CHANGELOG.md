@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- README badges now show downloads, Android, Kotlin, Jetpack Compose, UI languages, and the license.
+
 ## [1.0.0] - 2026-10-23
 
 First release.

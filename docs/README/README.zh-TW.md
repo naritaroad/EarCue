@@ -8,11 +8,7 @@ Android 耳機提詞 App：把講稿唸進你的耳機，拇指按一下就換�
 
 [下載 APK](https://github.com/naritaroad/EarCue/releases/latest) · [講稿格式](../../skills/earcue-script/reference/format.md) · [問題回報](https://github.com/naritaroad/EarCue/issues)
 
-![Release](https://img.shields.io/github/v/release/naritaroad/EarCue?include_prereleases&style=flat&color=FFB547)
 ![Downloads](https://img.shields.io/github/downloads/naritaroad/EarCue/total?style=flat&label=Downloads&color=3DDC84)
-![Stars](https://img.shields.io/github/stars/naritaroad/EarCue?style=flat&color=FFB547)
-![Last commit](https://img.shields.io/github/last-commit/naritaroad/EarCue?style=flat&color=1B1E26)
-![Issues](https://img.shields.io/github/issues/naritaroad/EarCue?style=flat&color=1B1E26)
 ![Android 8.0+](https://img.shields.io/badge/Android-8.0%2B-3DDC84?logo=android&logoColor=white)
 ![Kotlin 2.1](https://img.shields.io/badge/Kotlin-2.1-7F52FF?logo=kotlin&logoColor=white)
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack_Compose-Material_3-7F52FF)
