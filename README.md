@@ -21,11 +21,11 @@ An Android prompter that reads your speech into your earphones, one line per thu
 
 ## Features
 
-- **Instant switching**: every press of Next or Previous cuts the current line and starts the new one, so lines never overlap and you never wait for a sentence to finish.
+- **Instant switching**: every press of Next or Previous cuts the current line and starts the new one, so lines never overlap. Hold to skip line by line, hold Play to restart from the first line, and turn on chimes for a new slide or a change of speaker.
 - **Earphone guard**: with no earphones connected, or with media volume at 0, play buttons vibrate three times and make no sound. Unplugging mid-line stops playback.
 - **One-thumb control**: three preset button layouts, drag-to-move and drag-to-resize editing with reset, a left/right-hand mirror, and a black Stage mode for a phone held behind your back.
-- **Hardware buttons**: Sony shutter button (press = next, hold = previous), optional volume keys, and wired or Bluetooth earphone buttons.
-- **Voices**: Android text-to-speech with speed 0.25×–2.00× (hold − or + to change it continuously), pitch, engine and voice choice filtered by region and offline use, word-by-word highlighting, or your own recording per line.
+- **Hardware buttons**: Sony shutter button (press = next, hold = keep skipping), optional volume keys, and wired or Bluetooth earphone buttons.
+- **Voices**: Android text-to-speech with speed 0.25×–2.00×, a female/male switch, six preset voices, a separate voice and pitch for partner lines, word-by-word highlighting, or your own recording per line.
 - **Script library**: local SQLite storage with search over titles, tags and text, tag filters, and a git-like history: update a script from a new file and restore any earlier revision.
 - **AI conversion skill**: `skills/earcue-script` turns a Word, PDF or slide transcript into a tagged `.earcue.json` file and checks it word for word against the source.
 - **10 UI languages**: with light and dark themes: English, 繁體中文, 简体中文, Español, Português (Brasil), 日本語, 한국어, Français, Deutsch, Русский.
@@ -138,6 +138,7 @@ EarCue/
 ├── tools/
 │   ├── i18n/              # UI string tables + generator
 │   ├── readme/            # README template + translations
+│   ├── audio/             # reminder tone generator
 │   └── demo/              # demo file builder
 ├── design/                # logo source
 └── docs/                  # installation, architecture, assets, README/ (translations)

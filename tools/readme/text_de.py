@@ -4,11 +4,14 @@ T = dict(
     link_download="APK herunterladen", link_format="Skriptformat", link_issues="Issues",
     h_features="Funktionen",
     features=[
-        ("Sofortiger Wechsel", "jeder Druck auf Weiter oder Zurück bricht den aktuellen Satz ab und startet den neuen, nichts überlagert sich und du wartest nie auf das Satzende."),
+        ("Sofortiger Wechsel", "jeder Druck auf Weiter oder Zurück bricht den aktuellen Satz ab und startet den neuen, nichts überlagert sich. Halten springt Satz für Satz, Abspielen halten startet von vorn, und Töne können Folien- und Sprecherwechsel anzeigen."),
+
         ("Kopfhörerschutz", "ohne Kopfhörer oder bei Medienlautstärke 0 vibrieren die Wiedergabetasten dreimal und bleiben stumm. Kopfhörer abziehen stoppt die Wiedergabe."),
         ("Bedienung mit einem Daumen", "drei Tastenlayouts, Verschieben und Größe ändern per Ziehen mit Zurücksetzen, Spiegelung für Links- und Rechtshänder und ein schwarzer Bühnenmodus für das Telefon hinter dem Rücken."),
-        ("Hardwaretasten", "Sony-Auslöser (drücken = weiter, halten = zurück), optional Lautstärketasten sowie Tasten kabelgebundener oder Bluetooth-Kopfhörer."),
-        ("Stimmen", "Android-Sprachausgabe mit Tempo 0,25×–2,00× (− oder + halten für stufenloses Ändern), Tonhöhe, Engine und Stimmenwahl nach Region und Offline-Nutzung gefiltert, wortweises Hervorheben oder eigene Aufnahme pro Satz."),
+        ("Hardwaretasten", "Sony-Auslöser (drücken = weiter, halten = weiter springen), optional Lautstärketasten sowie Tasten kabelgebundener oder Bluetooth-Kopfhörer."),
+
+        ("Stimmen", "Android-Sprachausgabe mit Tempo 0,25×–2,00×, Umschalter weiblich/männlich, sechs voreingestellte Stimmen, eigene Stimme und Tonhöhe für Partnersätze, wortweises Hervorheben oder eigene Aufnahme pro Satz."),
+
         ("Skriptbibliothek", "lokale SQLite-Speicherung mit Suche in Titeln, Tags und Text, Tag-Filtern und einem Verlauf wie bei git: Skript aus neuer Datei aktualisieren und jede frühere Revision wiederherstellen."),
         ("KI-Konvertierungs-Skill", "`skills/earcue-script` wandelt ein Word-, PDF- oder Folien-Transkript in eine `.earcue.json` mit Tags um und prüft sie Wort für Wort gegen die Quelle."),
         ("10 UI-Sprachen", "mit hellem und dunklem Design: English, 繁體中文, 简体中文, Español, Português (Brasil), 日本語, 한국어, Français, Deutsch, Русский."),

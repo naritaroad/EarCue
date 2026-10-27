@@ -7,8 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-28
+
+### Added
+
+- Female/male voice switch. EarCue tells male from female voices itself by measuring each offline voice's pitch, because Android does not report a voice's gender.
+- Six preset voices: standard, bright and soft female; standard, deep and light male.
+- Separate voice and pitch for partner lines. By default partner lines use a voice of the other gender than yours.
+- Hold Next or Previous to skip line by line without speaking; letting go plays the line you stopped on.
+- Hold Play to go back to the first line, with the timer reset.
+- Slide-change tone (two rising notes before the first line of a new slide) and speaker-change tone (two falling notes when the next line is someone else's). Each can be turned off in Settings.
+
 ### Changed
 
+- Holding the Sony shutter button now keeps skipping forward, the same as holding Next. It no longer goes to the previous line.
+- Partner lines read aloud for rehearsal no longer only drop the pitch slightly; they use the partner voice.
 - README badges now show downloads, Android, Kotlin, Jetpack Compose, UI languages, and the license.
 
 ## [1.0.0] - 2026-10-23
@@ -31,5 +44,6 @@ First release.
 - `earcue-script` AI skill that converts a transcript into a tagged EarCue script file and checks it word for word against the source.
 - Fictional demo talk in `examples/green-streets/` (deck, bilingual transcript, cue file).
 
-[Unreleased]: https://github.com/naritaroad/EarCue/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/naritaroad/EarCue/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/naritaroad/EarCue/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/naritaroad/EarCue/releases/tag/v1.0.0

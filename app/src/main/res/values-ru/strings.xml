@@ -51,6 +51,7 @@
     <string name="hand_right">Правая рука</string>
     <string name="hand_right_hint">Большая кнопка справа</string>
     <string name="hand_right_short">Правая</string>
+    <string name="hint_hold">Удерживайте «Далее» или «Назад» (или затвор Sony), чтобы листать фрагменты; отпустите — начнётся воспроизведение. Удерживайте «Играть», чтобы начать с первого фрагмента.</string>
     <string name="import_ok">✓ %1$s · своих реплик: %2$d · партнёра: %3$d</string>
     <string name="import_paste">Вставить из буфера</string>
     <string name="import_save">Сохранить и выбрать</string>
@@ -81,6 +82,8 @@
     <string name="lib_subtitle">Поиск, теги, переключение и обновление</string>
     <string name="lib_title">Сценарии</string>
     <string name="msg_imported">«%1$s» импортирован</string>
+    <string name="msg_no_female">Для этого языка нет женского голоса, поэтому используется более высокий тон.</string>
+    <string name="msg_no_male">Для этого языка нет мужского голоса, поэтому используется более низкий тон.</string>
     <string name="msg_reverted">r%1$d восстановлена как r%2$d</string>
     <string name="msg_timer_reset">Таймер сброшен</string>
     <string name="msg_updated">Сохранено как версия r%1$d</string>
@@ -94,6 +97,8 @@
     <string name="out_muted">Без звука</string>
     <string name="out_none">Нет наушников</string>
     <string name="out_speaker">Репетиция через динамик</string>
+    <string name="partner_auto">Авто: другой пол</string>
+    <string name="partner_auto_hint">Берёт голос другого пола, чем мой, чтобы реплики партнёра было легко отличить</string>
     <string name="partner_label">%1$s (партнёр)</string>
     <string name="partner_says">%1$s говорит</string>
     <string name="preset_custom">Своя</string>
@@ -135,12 +140,17 @@
     <string name="set_keys">Физические кнопки</string>
     <string name="set_language">Язык</string>
     <string name="set_layout">Раскладка кнопок</string>
+    <string name="set_my_voice">Мой голос</string>
     <string name="set_notes">Показывать заметки</string>
     <string name="set_notes_hint">Показывать поле note под каждой репликой</string>
     <string name="set_overtime">Вибрация при превышении времени</string>
     <string name="set_overtime_hint">Два мягких импульса, когда раздел выходит за запланированное время</string>
+    <string name="set_page_tone">Сигнал смены слайда</string>
+    <string name="set_page_tone_hint">Две восходящие ноты перед первой репликой каждого нового слайда</string>
     <string name="set_partner">Читать реплики партнёра</string>
-    <string name="set_partner_hint">Для репетиции: реплики других читаются более низким голосом</string>
+    <string name="set_partner_hint">Для репетиции: реплики других читаются голосом партнёра</string>
+    <string name="set_partner_pitch">Высота голоса партнёра</string>
+    <string name="set_partner_voice">Голос партнёра</string>
     <string name="set_pitch">Высота голоса</string>
     <string name="set_playback">Воспроизведение</string>
     <string name="set_preview">Прослушать</string>
@@ -148,13 +158,15 @@
     <string name="set_screen_on">Не выключать экран во время выступления</string>
     <string name="set_screen_on_hint">После первого фрагмента или в режиме сцены</string>
     <string name="set_shutter">Кнопка затвора Sony</string>
-    <string name="set_shutter_hint">Нажатие = далее, удержание = назад</string>
+    <string name="set_shutter_hint">Нажатие = далее, удержание = листать вперёд</string>
     <string name="set_speaker">Разрешить динамик</string>
     <string name="set_speaker_hint">Только для репетиции в одиночку; выключите перед выходом на сцену</string>
     <string name="set_tap_haptics">Вибрация кнопок</string>
     <string name="set_tap_haptics_hint">Далее: одна · Назад: две · Стоп: одна длинная</string>
     <string name="set_text_size">Размер текста</string>
     <string name="set_theme">Тема</string>
+    <string name="set_turn_tone">Сигнал смены докладчика</string>
+    <string name="set_turn_tone_hint">Две нисходящие ноты после реплики, если следующая принадлежит другому</string>
     <string name="set_voice">Голос</string>
     <string name="set_volume">Клавиши громкости переключают фрагменты</string>
     <string name="set_volume_hint">Тише = далее, громче = назад (клавиши больше не меняют громкость)</string>
@@ -167,18 +179,32 @@
     <string name="timer_target">Цель %1$s</string>
     <string name="timer_total">всего %1$s</string>
     <string name="untitled">Сценарий без названия</string>
+    <string name="voice_all">Все голоса</string>
     <string name="voice_all_regions">Все регионы</string>
     <string name="voice_default">Голос по умолчанию</string>
+    <string name="voice_gender_female">Женский</string>
+    <string name="voice_gender_male">Мужской</string>
     <string name="voice_more">Установить другие голоса…</string>
     <string name="voice_network">Онлайн</string>
     <string name="voice_none">Подходящих голосов нет. Выберите другой регион или отключите «Только офлайн».</string>
     <string name="voice_offline">Офлайн</string>
     <string name="voice_offline_hint">Офлайн-голоса запускаются быстрее и не зависят от Wi-Fi на площадке</string>
     <string name="voice_offline_only">Только офлайн</string>
+    <string name="voice_presets">Готовые голоса</string>
+    <string name="voice_probing">Прослушиваем каждый голос, чтобы отличить мужские от женских…</string>
+    <string name="voice_role_me">Мои реплики</string>
+    <string name="voice_role_partner">Реплики партнёра</string>
     <string name="voice_show_all">Показать все голоса: %1$d</string>
     <string name="voice_subtitle">%1$s · голосов: %2$d</string>
     <string name="voice_system">Системный по умолчанию</string>
     <string name="voice_system_hint">Выбирается синтезатором по языку сценария</string>
     <string name="voice_title">Голос</string>
+    <string name="vp_bright_female">Женский звонкий</string>
+    <string name="vp_deep_male">Мужской низкий</string>
+    <string name="vp_female">Женский обычный</string>
+    <string name="vp_light_male">Мужской светлый</string>
+    <string name="vp_male">Мужской обычный</string>
+    <string name="vp_soft_female">Женский мягкий</string>
+    <string name="vp_unavailable">Не установлен</string>
     <string name="wait_for">Ждите: %1$s</string>
 </resources>

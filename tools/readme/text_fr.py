@@ -4,11 +4,14 @@ T = dict(
     link_download="Télécharger l'APK", link_format="Format du script", link_issues="Issues",
     h_features="Fonctionnalités",
     features=[
-        ("Changement instantané", "chaque pression sur Suivant ou Précédent coupe la phrase en cours et lance la nouvelle : rien ne se chevauche et vous n'attendez jamais la fin d'une phrase."),
+        ("Changement instantané", "chaque pression sur Suivant ou Précédent coupe la phrase en cours et lance la nouvelle, sans chevauchement. Maintenez pour avancer phrase par phrase, maintenez Lire pour reprendre au début, et activez des sons pour le changement de diapositive ou d'orateur."),
+
         ("Protection des écouteurs", "sans écouteurs ou avec le volume multimédia à 0, les boutons de lecture vibrent trois fois sans émettre de son. Débrancher les écouteurs arrête la lecture."),
         ("Contrôle au pouce", "trois dispositions de boutons, édition par glisser pour déplacer et redimensionner avec réinitialisation, miroir gaucher/droitier et un mode Scène noir pour le téléphone tenu dans le dos."),
-        ("Boutons physiques", "déclencheur Sony (appui = suivant, maintien = précédent), touches de volume en option et boutons d'écouteurs filaires ou Bluetooth."),
-        ("Voix", "synthèse vocale Android avec vitesse de 0,25× à 2,00× (maintenez − ou + pour régler en continu), hauteur, moteur et voix filtrés par région et hors ligne, surlignage mot à mot ou votre propre enregistrement par phrase."),
+        ("Boutons physiques", "déclencheur Sony (appui = suivant, maintien = continuer à avancer), touches de volume en option et boutons d'écouteurs filaires ou Bluetooth."),
+
+        ("Voix", "synthèse vocale Android avec vitesse de 0,25× à 2,00×, bascule voix féminine/masculine, six voix prédéfinies, voix et hauteur propres aux répliques du partenaire, surlignage mot à mot ou votre propre enregistrement par phrase."),
+
         ("Bibliothèque de scripts", "stockage SQLite local avec recherche sur titres, tags et texte, filtres par tag et historique à la git : mettez un script à jour avec un nouveau fichier et restaurez n'importe quelle révision."),
         ("Skill de conversion IA", "`skills/earcue-script` transforme une transcription Word, PDF ou diapositives en `.earcue.json` avec tags et la compare mot à mot à la source."),
         ("10 langues d'interface", "avec thèmes clair et sombre : English, 繁體中文, 简体中文, Español, Português (Brasil), 日本語, 한국어, Français, Deutsch, Русский."),

@@ -51,15 +51,25 @@ data class DeckLook(
     val stage: Boolean = false,
 )
 
-/** Renders the user's button layout. Buttons fire on touch-down so a cue switches the instant the thumb lands. */
+/**
+ * Renders the user's button layout. Buttons fire on touch-down so a cue switches the instant the thumb lands;
+ * [onRelease] lets a held button keep acting until the thumb lifts.
+ */
 @Composable
-fun Deck(layout: DeckLayout, look: DeckLook, modifier: Modifier = Modifier, onPress: (DeckButton) -> Unit) {
+fun Deck(
+    layout: DeckLayout,
+    look: DeckLook,
+    modifier: Modifier = Modifier,
+    onRelease: () -> Unit = {},
+    onPress: (DeckButton) -> Unit,
+) {
     BoxWithConstraints(modifier) {
         val w = maxWidth
         val h = maxHeight
         layout.slots.forEach { (button, slot) ->
             PressKey(
                 onPress = { onPress(button) },
+                onRelease = onRelease,
                 modifier = Modifier.offset(w * slot.x, h * slot.y).size(w * slot.w, h * slot.h).padding(5.dp),
             ) { pressed -> DeckFace(button, look, pressed) }
         }
@@ -67,9 +77,10 @@ fun Deck(layout: DeckLayout, look: DeckLook, modifier: Modifier = Modifier, onPr
 }
 
 @Composable
-private fun PressKey(onPress: () -> Unit, modifier: Modifier, content: @Composable (Boolean) -> Unit) {
+private fun PressKey(onPress: () -> Unit, onRelease: () -> Unit, modifier: Modifier, content: @Composable (Boolean) -> Unit) {
     var pressed by remember { mutableStateOf(false) }
     val fire by rememberUpdatedState(onPress)
+    val lift by rememberUpdatedState(onRelease)
     val scale by animateFloatAsState(if (pressed) 0.965f else 1f, tween(if (pressed) 60 else 160), label = "press")
     Box(
         modifier
@@ -81,6 +92,7 @@ private fun PressKey(onPress: () -> Unit, modifier: Modifier, content: @Composab
                     fire()
                     waitForUpOrCancellation()
                     pressed = false
+                    lift()
                 }
             },
     ) { content(pressed) }

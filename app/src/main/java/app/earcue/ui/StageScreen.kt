@@ -96,12 +96,9 @@ fun StageScreen(app: EarCueApp, st: EngineState, settings: Settings, onExit: () 
                 settings.deck,
                 DeckLook(st.playing, st.played, "", stage = true),
                 Modifier.weight(1f).fillMaxWidth().padding(start = 8.dp, end = 8.dp, bottom = 12.dp),
+                onRelease = { app.engine.release() },
             ) { button ->
-                when (button) {
-                    DeckButton.NEXT -> app.engine.next()
-                    DeckButton.PREV -> app.engine.prev()
-                    DeckButton.TOGGLE -> app.engine.toggle()
-                }
+                app.engine.press(button)
             }
         }
     }

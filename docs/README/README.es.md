@@ -21,11 +21,11 @@ Un apuntador para Android que lee tu discurso en tus auriculares, una frase por 
 
 ## Funciones
 
-- **Cambio instantáneo**: cada pulsación de Siguiente o Anterior corta la frase actual y empieza la nueva, así nunca se solapan ni hay que esperar a que termine.
+- **Cambio instantáneo**: cada pulsación de Siguiente o Anterior corta la frase actual y empieza la nueva, sin solaparse. Mantén pulsado para saltar frase a frase, mantén Reproducir para volver al principio y activa tonos para el cambio de diapositiva o de orador.
 - **Protección de auriculares**: sin auriculares conectados o con el volumen multimedia en 0, los botones de reproducción vibran tres veces y no suenan. Desconectar los auriculares detiene la reproducción.
 - **Control con un pulgar**: tres diseños de botones, edición arrastrando para mover y redimensionar con restablecimiento, espejo para zurdos y diestros, y un modo Escenario negro para el teléfono a la espalda.
-- **Botones físicos**: obturador Sony (pulsar = siguiente, mantener = anterior), teclas de volumen opcionales y botones de auriculares con cable o Bluetooth.
-- **Voces**: texto a voz de Android con velocidad 0,25×–2,00× (mantén − o + para cambiarla de forma continua), tono, motor y voz filtrados por región y uso sin conexión, resaltado palabra por palabra o tu propia grabación por frase.
+- **Botones físicos**: obturador Sony (pulsar = siguiente, mantener = seguir avanzando), teclas de volumen opcionales y botones de auriculares con cable o Bluetooth.
+- **Voces**: texto a voz de Android con velocidad 0,25×–2,00×, cambio entre voz femenina y masculina, seis voces predefinidas, voz y tono propios para las frases del compañero, resaltado palabra por palabra o tu propia grabación por frase.
 - **Biblioteca de guiones**: almacenamiento local en SQLite con búsqueda por título, etiquetas y texto, filtros por etiqueta e historial al estilo git: actualiza un guion con un archivo nuevo y restaura cualquier revisión anterior.
 - **Skill de conversión con IA**: `skills/earcue-script` convierte una transcripción de Word, PDF o diapositivas en un `.earcue.json` con etiquetas y lo compara palabra por palabra con el original.
 - **10 idiomas de interfaz**: con temas claro y oscuro: English, 繁體中文, 简体中文, Español, Português (Brasil), 日本語, 한국어, Français, Deutsch, Русский.
@@ -138,6 +138,7 @@ EarCue/
 ├── tools/
 │   ├── i18n/              # UI string tables + generator
 │   ├── readme/            # README template + translations
+│   ├── audio/             # reminder tone generator
 │   └── demo/              # demo file builder
 ├── design/                # logo source
 └── docs/                  # installation, architecture, assets, README/ (translations)

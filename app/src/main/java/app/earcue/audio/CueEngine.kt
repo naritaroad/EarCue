@@ -23,6 +23,7 @@ import android.speech.tts.Voice
 import androidx.core.content.ContextCompat
 import app.earcue.R
 import app.earcue.data.Cue
+import app.earcue.data.DeckButton
 import app.earcue.data.Db
 import app.earcue.data.Prefs
 import app.earcue.data.ScriptMeta
@@ -52,6 +53,11 @@ data class EngineState(
     val ttsReady: Boolean = false,
     val voices: List<VoiceOption> = emptyList(),
     val voiceName: String = "",
+    /** The engine's own pick for the script language, used when the user chose "system default". */
+    val defaultVoice: String = "",
+    /** Detected gender per voice name; filled in by [VoiceProbe] in the background. */
+    val genders: Map<String, Gender> = emptyMap(),
+    val probing: Boolean = false,
     val engines: List<Pair<String, String>> = emptyList(),
     /** Package of the TTS engine actually in use (the system default when the user has not picked one). */
     val engine: String = "",
@@ -77,9 +83,30 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
     private var tts: TextToSpeech? = null
     private var player: MediaPlayer? = null
     private var generation = 0
+    /** Utterance id of the spoken text (drives word highlighting). */
     private var currentId = ""
+    /** Id of the last thing queued for the current cue (text, or the turn tone after it); its end ends the cue. */
+    private var finishId = ""
+    private var earcons = false
     private var lastSection = ""
     private var warnedSection = ""
+    private var voiceList: List<Voice> = emptyList()
+    private var locale: Locale = Locale.US
+    private var probe: VoiceProbe? = null
+
+    // Holding Next/Previous skips cue by cue without speaking; releasing plays where it stopped.
+    private var holdDir = 0
+    private var holdSteps = 0
+    private var holdAtEdge = false
+    private val holdStep = object : Runnable {
+        override fun run() {
+            if (holdDir == 0) return
+            skip(holdDir)
+            holdSteps++
+            main.postDelayed(this, if (holdSteps < 5) HOLD_REPEAT_MS else HOLD_REPEAT_FAST_MS)
+        }
+    }
+    private val restartHold = Runnable { restart() }
 
     private val headphoneTypes = buildSet {
         add(AudioDeviceInfo.TYPE_WIRED_HEADSET)
@@ -199,26 +226,81 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
 
     // ---- transport ----
 
-    fun next() {
+    /** Returns false when nothing played (end of script, or blocked by the earphone guard). */
+    fun next(): Boolean {
         val st = s
-        if (st.cues.isEmpty()) return
+        if (st.cues.isEmpty()) return false
         val target = if (!st.played) firstPlayable(st.index) else step(st.index, +1)
         if (target == null) {
             haptics.edge()
-            return
+            return false
         }
-        playAt(target) { haptics.next() }
+        return playAt(target) { haptics.next() }
     }
 
-    fun prev() {
+    fun prev(): Boolean {
         val st = s
-        if (st.cues.isEmpty()) return
+        if (st.cues.isEmpty()) return false
         val target = step(st.index, -1)
         if (target == null) {
             haptics.edge()
+            return false
+        }
+        return playAt(target) { haptics.prev() }
+    }
+
+    /**
+     * A deck button or the Sony shutter went down. Next/Previous act at once and, when held, keep skipping;
+     * Play/Stop acts at once and, when held, restarts the talk from the first cue.
+     */
+    fun press(button: DeckButton) {
+        release(play = false)
+        when (button) {
+            DeckButton.NEXT -> if (next()) startHold(+1)
+            DeckButton.PREV -> if (prev()) startHold(-1)
+            DeckButton.TOGGLE -> {
+                toggle()
+                main.postDelayed(restartHold, RESTART_HOLD_MS)
+            }
+        }
+    }
+
+    /** The button went up: a skip run ends by playing the cue it landed on. */
+    fun release(play: Boolean = true) {
+        main.removeCallbacks(holdStep)
+        main.removeCallbacks(restartHold)
+        val skipped = holdSteps > 0
+        holdDir = 0
+        holdSteps = 0
+        if (play && skipped) firstPlayable(s.index)?.let { playAt(it) { haptics.next() } }
+    }
+
+    private fun startHold(dir: Int) {
+        holdDir = dir
+        holdSteps = 0
+        holdAtEdge = false
+        main.postDelayed(holdStep, HOLD_DELAY_MS)
+    }
+
+    private fun skip(dir: Int) {
+        val target = step(s.index, dir)
+        if (target == null) {
+            if (!holdAtEdge) haptics.edge()
+            holdAtEdge = true
             return
         }
-        playAt(target) { haptics.prev() }
+        silence()
+        set { it.copy(index = target, played = false) }
+        savePosition(target)
+        if (prefs.value.tapHaptics) haptics.tick()
+    }
+
+    /** Back to the first cue of the script with the timer reset, and play it. */
+    fun restart() {
+        if (s.cues.isEmpty()) return
+        val first = firstPlayable(0) ?: return
+        resetTimer()
+        playAt(first) { haptics.restart() }
     }
 
     fun toggle() {
@@ -255,12 +337,12 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
         warnedSection = ""
     }
 
-    /** Speaks a sample line from the settings screen, under the same headphone rule. */
-    fun preview(text: String) {
+    /** Speaks a sample line in my voice or the partner voice, under the same headphone rule. */
+    fun preview(text: String, partner: Boolean = false) {
         if (!canPlay()) return
         silence()
         val gen = ++generation
-        speakText(text, false, gen)
+        speakText(text, partner, gen)
         set { it.copy(playing = true) }
     }
 
@@ -277,11 +359,11 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
         return null
     }
 
-    private fun playAt(index: Int, feedback: () -> Unit) {
+    private fun playAt(index: Int, feedback: () -> Unit): Boolean {
         val cues = s.cues
-        if (cues.isEmpty()) return
+        if (cues.isEmpty()) return false
         val i = index.coerceIn(cues.indices)
-        if (!canPlay()) return
+        if (!canPlay()) return false
         silence()
         val gen = ++generation
         val cue = cues[i]
@@ -299,11 +381,18 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
         savePosition(i)
         publishSession(true, cue)
 
+        val p = prefs.value
+        // A new slide starts when the previous line played belongs to another section.
+        val pageTone = p.pageTone && step(i, -1)?.let { cues[it].section != cue.section } == true
+        // The turn passes when the next line in the script is someone else's.
+        val turnTone = p.turnTone && cues.getOrNull(i + 1)?.let { it.partner != cue.partner } == true
         val recording = cue.recording?.let(::File)?.takeIf { it.exists() && it.length() > 0 }
-        if (recording != null) playFile(recording, cue, gen) else speakText(cue.text, cue.isPartner, gen)
+        if (recording != null) playFile(recording, cue, gen, pageTone, turnTone)
+        else speakText(cue.text, cue.isPartner, gen, pageTone, turnTone)
+        return true
     }
 
-    private fun speakText(text: String, partner: Boolean, gen: Int) {
+    private fun speakText(text: String, partner: Boolean, gen: Int, pageTone: Boolean = false, turnTone: Boolean = false) {
         val t = tts
         if (t == null || !s.ttsReady) {
             set { it.copy(playing = false, blockedAt = SystemClock.elapsedRealtime(), blockedReason = R.string.block_tts) }
@@ -311,33 +400,74 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
             return
         }
         val p = prefs.value
+        val (voice, pitch) = if (partner) partnerVoice() else voiceNamed(p.voice) to p.pitch
+        if (voice != null) t.voice = voice else t.language = locale
         t.setSpeechRate(p.rate)
-        // A lower pitch marks co-presenter lines when they are read aloud for rehearsal.
-        t.setPitch(if (partner) p.pitch * 0.82f else p.pitch)
+        t.setPitch(pitch)
+        var mode = TextToSpeech.QUEUE_FLUSH
+        if (pageTone && earcons) {
+            t.playEarcon(Earcons.PAGE, TextToSpeech.QUEUE_FLUSH, Bundle(), "page-$gen")
+            mode = TextToSpeech.QUEUE_ADD
+        }
         currentId = "cue-$gen"
-        t.speak(text, TextToSpeech.QUEUE_FLUSH, Bundle(), currentId)
+        finishId = currentId
+        t.speak(text, mode, Bundle(), currentId)
+        if (turnTone && earcons) {
+            finishId = "turn-$gen"
+            t.playEarcon(Earcons.TURN, TextToSpeech.QUEUE_ADD, Bundle(), finishId)
+        }
     }
 
-    private fun playFile(file: File, cue: Cue, gen: Int) {
+    /** Plays one reminder tone on its own, from the settings toggles, under the same headphone rule. */
+    fun previewTone(earcon: String) {
+        val t = tts ?: return
+        if (!earcons || !canPlay()) return
+        silence()
+        val gen = ++generation
+        finishId = "tone-$gen"
+        t.playEarcon(earcon, TextToSpeech.QUEUE_FLUSH, Bundle(), finishId)
+        set { it.copy(playing = true) }
+    }
+
+    private fun playFile(file: File, cue: Cue, gen: Int, pageTone: Boolean, turnTone: Boolean) {
         val mp = MediaPlayer()
         currentId = "cue-$gen"
+        finishId = currentId
         try {
             mp.setAudioAttributes(speechAttributes)
             mp.setDataSource(file.absolutePath)
             mp.prepare()
-            mp.setOnCompletionListener { finished("cue-$gen") }
+            mp.setOnCompletionListener {
+                if (gen != generation) return@setOnCompletionListener
+                val t = tts
+                if (turnTone && earcons && t != null) {
+                    finishId = "turn-$gen"
+                    t.playEarcon(Earcons.TURN, TextToSpeech.QUEUE_FLUSH, Bundle(), finishId)
+                } else {
+                    finished("cue-$gen")
+                }
+            }
             mp.playbackParams = mp.playbackParams.setSpeed(prefs.value.rate)
-            mp.start()
             player = mp
+            val t = tts
+            if (pageTone && earcons && t != null) {
+                // The recording starts once the page tone has had time to sound.
+                t.playEarcon(Earcons.PAGE, TextToSpeech.QUEUE_FLUSH, Bundle(), "page-$gen")
+                main.postDelayed({ if (gen == generation && player == mp) mp.start() }, PAGE_TONE_MS)
+            } else {
+                mp.start()
+            }
         } catch (e: Exception) {
             mp.release()
-            speakText(cue.text, cue.isPartner, gen)
+            player = null
+            speakText(cue.text, cue.isPartner, gen, pageTone, turnTone)
         }
     }
 
     private fun finished(id: String) {
-        if (id != currentId) return
+        if (id.isEmpty() || id != finishId) return
         currentId = ""
+        finishId = ""
         player?.release()
         player = null
         set { it.copy(playing = false, range = null) }
@@ -352,6 +482,7 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
     private fun silence() {
         generation++
         currentId = ""
+        finishId = ""
         tts?.stop()
         player?.let { runCatching { it.stop() }; it.release() }
         player = null
@@ -411,6 +542,8 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
     // ---- TTS ----
 
     fun initTts() {
+        probe?.cancel()
+        probe = null
         silence()
         tts?.shutdown()
         set { it.copy(ttsReady = false) }
@@ -426,6 +559,7 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
             return
         }
         t.setAudioAttributes(speechAttributes)
+        earcons = Earcons.resources.all { (name, res) -> t.addEarcon(name, context.packageName, res) == TextToSpeech.SUCCESS }
         t.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
             override fun onStart(utteranceId: String?) = Unit
 
@@ -463,16 +597,84 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
             .sortedWith(
                 compareBy<Voice>({ it.isNetworkConnectionRequired }, { it.locale.country != locale.country }, { -it.quality }, { it.name })
             )
+        this.locale = locale
+        voiceList = matching
+        t.language = locale
+        val defaultName = runCatching { t.voice?.name }.getOrNull().orEmpty()
         val chosen = matching.firstOrNull { it.name == prefs.value.voice }
-        if (chosen != null) t.voice = chosen else t.language = locale
+        if (chosen != null) t.voice = chosen
         t.setSpeechRate(prefs.value.rate)
         t.setPitch(prefs.value.pitch)
+        val engine = s.engine
+        // Re-judge from the stored pitch, so a change to the split applies to voices measured earlier.
+        val genders = matching.associate { v ->
+            val hz = prefs.cachedGender(engine, v.name)?.substringAfter(':')?.toFloatOrNull() ?: 0f
+            v.name to PitchEstimate.gender(hz)
+        }
         set { st ->
             st.copy(
                 voices = matching.map { VoiceOption(it.name, it.locale, !it.isNetworkConnectionRequired, it.quality) },
                 voiceName = chosen?.name ?: "",
+                defaultVoice = defaultName,
+                genders = genders,
             )
         }
+        probeGenders()
+    }
+
+    /** Listens to every offline voice that has no cached gender yet; network voices are skipped. */
+    private fun probeGenders() {
+        if (probe != null) return
+        val engine = s.engine
+        val todo = voiceList.filter { !it.isNetworkConnectionRequired && prefs.cachedGender(engine, it.name) == null }
+        if (todo.isEmpty()) return
+        val sample = s.cues.firstOrNull { !it.isPartner }?.text?.take(140)
+            ?: context.getString(R.string.voice_sample)
+        set { it.copy(probing = true) }
+        probe = VoiceProbe(
+            context, engine,
+            onResult = { name, gender, hz ->
+                val code = when (gender) {
+                    Gender.MALE -> "m"
+                    Gender.FEMALE -> "f"
+                    Gender.UNKNOWN -> "?"
+                }
+                prefs.cacheGender(engine, name, "$code:${hz.toInt()}")
+                set { it.copy(genders = it.genders + (name to gender)) }
+            },
+            onDone = {
+                probe = null
+                set { it.copy(probing = false) }
+            },
+        ).also { it.start(todo, sample) }
+    }
+
+    private fun voiceNamed(name: String): Voice? = if (name.isBlank()) null else voiceList.firstOrNull { it.name == name }
+
+    /**
+     * Gender of the voice my lines actually use: the chosen one if this engine has it, otherwise the
+     * engine default (a voice picked under another engine is ignored, exactly as playback ignores it).
+     */
+    fun myGender(): Gender = s.genders[s.voiceName.ifBlank { s.defaultVoice }] ?: Gender.UNKNOWN
+
+    /** Voices of [gender] in the script language: offline first, the script's region first. */
+    fun voicesOf(gender: Gender): List<VoiceOption> = s.voices
+        .filter { s.genders[it.name] == gender }
+        .sortedWith(compareBy({ !it.offline }, { it.locale.country != locale.country }))
+
+    /**
+     * The partner voice: the user's pick, or automatically a voice of the other gender.
+     * When no such voice is installed, a clearly shifted pitch on my voice stands in.
+     */
+    private fun partnerVoice(): Pair<Voice?, Float> {
+        val p = prefs.value
+        voiceNamed(p.partnerVoice)?.let { return it to p.partnerPitch }
+        val mine = s.voiceName.ifBlank { s.defaultVoice }
+        val want = if (myGender() == Gender.MALE) Gender.FEMALE else Gender.MALE
+        val other = voicesOf(want).firstOrNull { it.name != mine }?.let { voiceNamed(it.name) }
+        if (other != null) return other to p.partnerPitch
+        val shift = if (want == Gender.MALE) 0.72f else 1.3f
+        return voiceNamed(p.voice) to (p.pitch * shift * p.partnerPitch)
     }
 
     // ---- media session (earphone buttons) ----
@@ -500,5 +702,13 @@ class CueEngine(private val context: Context, private val db: Db, private val pr
     fun setSessionActive(active: Boolean) {
         if (active) publishSession(s.playing, s.cue)
         session.isActive = active
+    }
+
+    companion object {
+        const val HOLD_DELAY_MS = 450L
+        const val HOLD_REPEAT_MS = 320L
+        const val HOLD_REPEAT_FAST_MS = 180L
+        const val RESTART_HOLD_MS = 700L
+        const val PAGE_TONE_MS = 330L
     }
 }

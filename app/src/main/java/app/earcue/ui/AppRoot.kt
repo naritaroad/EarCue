@@ -63,6 +63,7 @@ private fun Screens(app: EarCueApp, activity: ComponentActivity) {
     var cueIndex by remember { mutableIntStateOf(0) }
     var scriptId by remember { mutableLongStateOf(-1L) }
     var importTarget by remember { mutableStateOf<Long?>(null) }
+    var voicePartner by remember { mutableStateOf(false) }
     val screen = stack.last()
 
     fun go(s: Screen) {
@@ -98,7 +99,7 @@ private fun Screens(app: EarCueApp, activity: ComponentActivity) {
             label = "screen",
         ) { s ->
             when (s) {
-                Screen.HOME -> HomeScreen(app, st, settings, ::go)
+                Screen.HOME -> HomeScreen(app, st, settings) { if (it == Screen.VOICES) voicePartner = false; go(it) }
                 Screen.CUES -> CuesScreen(app, st, ::back) { cueIndex = it; go(Screen.CUE) }
                 Screen.CUE -> CueDetailScreen(app, st, cueIndex, ::back)
                 Screen.LIBRARY -> LibraryScreen(
@@ -112,8 +113,8 @@ private fun Screens(app: EarCueApp, activity: ComponentActivity) {
                     onPasteRevision = { importTarget = scriptId; go(Screen.IMPORT) },
                 )
                 Screen.IMPORT -> ImportScreen(app, importTarget, ::back) { if (importTarget != null) back() else home() }
-                Screen.SETTINGS -> SettingsScreen(app, st, settings, ::back, onLayout = { go(Screen.LAYOUT) }, onVoices = { go(Screen.VOICES) })
-                Screen.VOICES -> VoicesScreen(app, st, settings, ::back)
+                Screen.SETTINGS -> SettingsScreen(app, st, settings, ::back, onLayout = { go(Screen.LAYOUT) }, onVoices = { voicePartner = it; go(Screen.VOICES) })
+                Screen.VOICES -> VoicesScreen(app, st, settings, voicePartner, onRole = { voicePartner = it }, onBack = ::back)
                 Screen.LAYOUT -> LayoutEditorScreen(app, settings, ::back)
                 Screen.STAGE -> StageScreen(app, st, settings, ::back)
             }

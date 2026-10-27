@@ -80,6 +80,7 @@ EarCue/
 ├── tools/
 │   ├── i18n/              # UI string tables + generator
 │   ├── readme/            # README template + translations
+│   ├── audio/             # reminder tone generator
 │   └── demo/              # demo file builder
 ├── design/                # logo source
 └── docs/                  # installation, architecture, assets, README/ (translations)

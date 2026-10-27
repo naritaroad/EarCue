@@ -53,6 +53,7 @@
     <string name="hand_right">Right hand</string>
     <string name="hand_right_hint">Big button on the right</string>
     <string name="hand_right_short">Right</string>
+    <string name="hint_hold">Hold Next or Previous (or the Sony shutter) to skip cue by cue; let go to play. Hold Play to restart from the first cue.</string>
     <string name="import_ok">✓ %1$s · %2$d own lines · %3$d partner cues</string>
     <string name="import_paste">Paste from clipboard</string>
     <string name="import_save">Save and use</string>
@@ -83,6 +84,8 @@
     <string name="lib_subtitle">Search, tag, switch and update scripts</string>
     <string name="lib_title">Scripts</string>
     <string name="msg_imported">Imported \"%1$s\"</string>
+    <string name="msg_no_female">No female voice is installed for this language, so a higher pitch is used instead.</string>
+    <string name="msg_no_male">No male voice is installed for this language, so a lower pitch is used instead.</string>
     <string name="msg_reverted">Restored r%1$d as r%2$d</string>
     <string name="msg_timer_reset">Timer reset</string>
     <string name="msg_updated">Saved as revision r%1$d</string>
@@ -96,6 +99,8 @@
     <string name="out_muted">Muted</string>
     <string name="out_none">No earphones</string>
     <string name="out_speaker">Speaker practice</string>
+    <string name="partner_auto">Auto: the other gender</string>
+    <string name="partner_auto_hint">Uses a voice of the other gender than mine, so partner lines stand out</string>
     <string name="partner_label">%1$s (partner)</string>
     <string name="partner_says">%1$s says</string>
     <string name="preset_custom">Custom</string>
@@ -137,12 +142,17 @@
     <string name="set_keys">Hardware buttons</string>
     <string name="set_language">Language</string>
     <string name="set_layout">Home button layout</string>
+    <string name="set_my_voice">My voice</string>
     <string name="set_notes">Show notes</string>
     <string name="set_notes_hint">Show the note field under each line</string>
     <string name="set_overtime">Overtime vibration</string>
     <string name="set_overtime_hint">Two soft pulses when a section runs past its planned time</string>
+    <string name="set_page_tone">Slide-change tone</string>
+    <string name="set_page_tone_hint">Two rising notes before the first line of each new slide</string>
     <string name="set_partner">Read partner lines aloud</string>
-    <string name="set_partner_hint">For rehearsal: read other presenters\' lines at a lower pitch</string>
+    <string name="set_partner_hint">For rehearsal: read other presenters\' lines in the partner voice</string>
+    <string name="set_partner_pitch">Partner pitch</string>
+    <string name="set_partner_voice">Partner voice</string>
     <string name="set_pitch">Pitch</string>
     <string name="set_playback">Playback</string>
     <string name="set_preview">Preview</string>
@@ -150,13 +160,15 @@
     <string name="set_screen_on">Keep the screen on while presenting</string>
     <string name="set_screen_on_hint">After the first cue plays or in Stage mode</string>
     <string name="set_shutter">Sony shutter button</string>
-    <string name="set_shutter_hint">Press = next, hold = previous</string>
+    <string name="set_shutter_hint">Press = next, hold = keep skipping forward</string>
     <string name="set_speaker">Allow loudspeaker</string>
     <string name="set_speaker_hint">Only for practice alone; turn it off before going on stage</string>
     <string name="set_tap_haptics">Button vibration</string>
     <string name="set_tap_haptics_hint">Next: one tap · Previous: two · Stop: one long</string>
     <string name="set_text_size">Script text size</string>
     <string name="set_theme">Theme</string>
+    <string name="set_turn_tone">Speaker-change tone</string>
+    <string name="set_turn_tone_hint">Two falling notes after a line when the next one is someone else\'s</string>
     <string name="set_voice">Voice</string>
     <string name="set_volume">Volume keys switch cues</string>
     <string name="set_volume_hint">Volume down = next, volume up = previous (keys no longer change volume)</string>
@@ -169,18 +181,32 @@
     <string name="timer_target">Target %1$s</string>
     <string name="timer_total">total %1$s</string>
     <string name="untitled">Untitled script</string>
+    <string name="voice_all">All voices</string>
     <string name="voice_all_regions">All regions</string>
     <string name="voice_default">Default voice</string>
+    <string name="voice_gender_female">Female</string>
+    <string name="voice_gender_male">Male</string>
     <string name="voice_more">Install more voices…</string>
     <string name="voice_network">Online</string>
     <string name="voice_none">No voice matches. Choose another region or turn off Offline only.</string>
     <string name="voice_offline">Offline</string>
     <string name="voice_offline_hint">Offline voices start faster and do not depend on the venue Wi-Fi</string>
     <string name="voice_offline_only">Offline only</string>
+    <string name="voice_presets">Preset voices</string>
+    <string name="voice_probing">Listening to each voice to tell male from female…</string>
+    <string name="voice_role_me">My lines</string>
+    <string name="voice_role_partner">Partner lines</string>
     <string name="voice_show_all">Show all %1$d voices</string>
     <string name="voice_subtitle">%1$s · %2$d voices</string>
     <string name="voice_system">System default</string>
     <string name="voice_system_hint">Picked by the engine for the script language</string>
     <string name="voice_title">Voice</string>
+    <string name="vp_bright_female">Bright female</string>
+    <string name="vp_deep_male">Deep male</string>
+    <string name="vp_female">Standard female</string>
+    <string name="vp_light_male">Light male</string>
+    <string name="vp_male">Standard male</string>
+    <string name="vp_soft_female">Soft female</string>
+    <string name="vp_unavailable">Not installed</string>
     <string name="wait_for">Wait for %1$s</string>
 </resources>

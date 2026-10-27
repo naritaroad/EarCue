@@ -45,7 +45,7 @@ A file whose title matches an existing script can be saved as a new revision of 
 - Connect earphones. The pill at the top right turns green with the device name.
 - In **Settings → Voice**, pick an offline voice for the script language.
 - In **Buttons**, choose a layout, or drag the buttons to fit your hand.
-- On Sony Xperia phones, the shutter button works as Next (press) and Previous (hold).
+- On Sony Xperia phones, the shutter button works as Next: press for the next line, hold to keep skipping forward. Hold the on-screen Play button to restart from the first line.
 
 ## Build from source
 

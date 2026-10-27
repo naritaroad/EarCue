@@ -92,12 +92,9 @@ fun HomeScreen(app: EarCueApp, st: EngineState, settings: Settings, go: (Screen)
                 settings.deck,
                 DeckLook(st.playing, st.played, nextPreview(st, settings)),
                 Modifier.fillMaxWidth().height(deckHeight).padding(horizontal = 11.dp),
+                onRelease = { engine.release() },
             ) { button ->
-                when (button) {
-                    DeckButton.NEXT -> engine.next()
-                    DeckButton.PREV -> engine.prev()
-                    DeckButton.TOGGLE -> engine.toggle()
-                }
+                engine.press(button)
             }
             BottomNav(go)
         }
@@ -304,7 +301,9 @@ private fun ControlStrip(app: EarCueApp, st: EngineState, settings: Settings, on
             Text(String.format(Locale.US, "%.2f×", settings.rate), style = MaterialTheme.typography.labelLarge, color = Ink.text)
             StepButton("+") { stepRate(app, +0.05f) }
         }
-        val voice = st.voices.firstOrNull { it.name == st.voiceName }?.let { voiceLabel(it) } ?: stringResource(R.string.voice_default)
+        val mark = genderMark(app.engine.myGender())
+        val voice = (if (mark.isEmpty()) "" else "$mark ") +
+            (st.voices.firstOrNull { it.name == st.voiceName }?.let { voiceLabel(it) } ?: stringResource(R.string.voice_default))
         Row(
             Modifier.weight(1f).clip(RoundedCornerShape(50)).background(Ink.surface).border(1.dp, Ink.line, RoundedCornerShape(50))
                 .clickable(onClick = onVoice).padding(horizontal = 12.dp, vertical = 9.dp),

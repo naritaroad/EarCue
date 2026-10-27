@@ -51,6 +51,7 @@
     <string name="hand_right">Main droite</string>
     <string name="hand_right_hint">Grand bouton à droite</string>
     <string name="hand_right_short">Droite</string>
+    <string name="hint_hold">Maintenez Suivant ou Précédent (ou le déclencheur Sony) pour avancer passage par passage ; relâchez pour lire. Maintenez Lire pour reprendre au premier passage.</string>
     <string name="import_ok">✓ %1$s · %2$d répliques · %3$d du partenaire</string>
     <string name="import_paste">Coller le presse-papiers</string>
     <string name="import_save">Enregistrer et utiliser</string>
@@ -81,6 +82,8 @@
     <string name="lib_subtitle">Rechercher, classer, changer et mettre à jour</string>
     <string name="lib_title">Scripts</string>
     <string name="msg_imported">« %1$s » importé</string>
+    <string name="msg_no_female">Aucune voix féminine installée pour cette langue ; une hauteur plus aiguë la remplace.</string>
+    <string name="msg_no_male">Aucune voix masculine installée pour cette langue ; une hauteur plus grave la remplace.</string>
     <string name="msg_reverted">r%1$d restaurée en r%2$d</string>
     <string name="msg_timer_reset">Chronomètre remis à zéro</string>
     <string name="msg_updated">Enregistré comme révision r%1$d</string>
@@ -94,6 +97,8 @@
     <string name="out_muted">Muet</string>
     <string name="out_none">Sans écouteurs</string>
     <string name="out_speaker">Répétition haut-parleur</string>
+    <string name="partner_auto">Auto : l\'autre genre</string>
+    <string name="partner_auto_hint">Utilise une voix du genre opposé à la mienne pour distinguer les répliques du partenaire</string>
     <string name="partner_label">%1$s (partenaire)</string>
     <string name="partner_says">%1$s dit</string>
     <string name="preset_custom">Personnalisé</string>
@@ -135,12 +140,17 @@
     <string name="set_keys">Boutons physiques</string>
     <string name="set_language">Langue</string>
     <string name="set_layout">Disposition des boutons</string>
+    <string name="set_my_voice">Ma voix</string>
     <string name="set_notes">Afficher les notes</string>
     <string name="set_notes_hint">Affiche le champ note sous chaque réplique</string>
     <string name="set_overtime">Vibration de dépassement</string>
     <string name="set_overtime_hint">Deux pulsations légères quand une section dépasse son temps prévu</string>
+    <string name="set_page_tone">Son de changement de diapositive</string>
+    <string name="set_page_tone_hint">Deux notes montantes avant la première réplique de chaque diapositive</string>
     <string name="set_partner">Lire les répliques du partenaire</string>
-    <string name="set_partner_hint">Pour répéter : lit les répliques des autres d\'une voix plus grave</string>
+    <string name="set_partner_hint">Pour répéter : lit les répliques des autres avec la voix du partenaire</string>
+    <string name="set_partner_pitch">Hauteur du partenaire</string>
+    <string name="set_partner_voice">Voix du partenaire</string>
     <string name="set_pitch">Hauteur</string>
     <string name="set_playback">Lecture</string>
     <string name="set_preview">Écouter</string>
@@ -148,13 +158,15 @@
     <string name="set_screen_on">Garder l\'écran allumé</string>
     <string name="set_screen_on_hint">Après le premier passage ou en mode Scène</string>
     <string name="set_shutter">Déclencheur Sony</string>
-    <string name="set_shutter_hint">Appui = suivant, maintien = précédent</string>
+    <string name="set_shutter_hint">Appui = suivant, maintien = continuer à avancer</string>
     <string name="set_speaker">Autoriser le haut-parleur</string>
     <string name="set_speaker_hint">Uniquement pour répéter seul ; désactivez-le avant de monter sur scène</string>
     <string name="set_tap_haptics">Vibration des boutons</string>
     <string name="set_tap_haptics_hint">Suivant : une · Précédent : deux · Arrêter : une longue</string>
     <string name="set_text_size">Taille du texte</string>
     <string name="set_theme">Thème</string>
+    <string name="set_turn_tone">Son de changement d\'orateur</string>
+    <string name="set_turn_tone_hint">Deux notes descendantes après une réplique quand la suivante est à quelqu\'un d\'autre</string>
     <string name="set_voice">Voix</string>
     <string name="set_volume">Touches de volume pour changer de passage</string>
     <string name="set_volume_hint">Volume bas = suivant, volume haut = précédent (les touches ne règlent plus le volume)</string>
@@ -167,18 +179,32 @@
     <string name="timer_target">Objectif %1$s</string>
     <string name="timer_total">total %1$s</string>
     <string name="untitled">Script sans titre</string>
+    <string name="voice_all">Toutes les voix</string>
     <string name="voice_all_regions">Toutes les régions</string>
     <string name="voice_default">Voix par défaut</string>
+    <string name="voice_gender_female">Féminine</string>
+    <string name="voice_gender_male">Masculine</string>
     <string name="voice_more">Installer d\'autres voix…</string>
     <string name="voice_network">En ligne</string>
     <string name="voice_none">Aucune voix ne correspond. Choisissez une autre région ou désactivez Hors ligne uniquement.</string>
     <string name="voice_offline">Hors ligne</string>
     <string name="voice_offline_hint">Les voix hors ligne démarrent plus vite et ne dépendent pas du Wi-Fi de la salle</string>
     <string name="voice_offline_only">Hors ligne uniquement</string>
+    <string name="voice_presets">Voix prédéfinies</string>
+    <string name="voice_probing">Écoute de chaque voix pour distinguer masculin et féminin…</string>
+    <string name="voice_role_me">Mes répliques</string>
+    <string name="voice_role_partner">Répliques du partenaire</string>
     <string name="voice_show_all">Afficher les %1$d voix</string>
     <string name="voice_subtitle">%1$s · %2$d voix</string>
     <string name="voice_system">Par défaut du système</string>
     <string name="voice_system_hint">Choisie par le moteur selon la langue du script</string>
     <string name="voice_title">Voix</string>
+    <string name="vp_bright_female">Féminine claire</string>
+    <string name="vp_deep_male">Masculine grave</string>
+    <string name="vp_female">Féminine standard</string>
+    <string name="vp_light_male">Masculine légère</string>
+    <string name="vp_male">Masculine standard</string>
+    <string name="vp_soft_female">Féminine douce</string>
+    <string name="vp_unavailable">Non installée</string>
     <string name="wait_for">Attendez %1$s</string>
 </resources>

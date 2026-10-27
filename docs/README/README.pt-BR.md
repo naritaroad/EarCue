@@ -21,11 +21,11 @@ Um ponto eletrônico para Android que lê sua fala nos fones, uma frase por toqu
 
 ## Recursos
 
-- **Troca instantânea**: cada toque em Próximo ou Anterior corta a frase atual e começa a nova, então as frases nunca se sobrepõem e você não espera uma terminar.
+- **Troca instantânea**: cada toque em Próximo ou Anterior corta a frase atual e começa a nova, sem sobreposição. Segure para pular frase a frase, segure Tocar para voltar ao início e ative tons para troca de slide ou de apresentador.
 - **Proteção dos fones**: sem fones conectados ou com o volume de mídia em 0, os botões de reprodução vibram três vezes e não tocam nada. Tirar os fones no meio interrompe a reprodução.
 - **Controle com um polegar**: três layouts de botões, edição arrastando para mover e redimensionar com restauração, espelho para canhotos e destros, e um modo Palco preto para o celular nas costas.
-- **Botões físicos**: obturador Sony (pressionar = próximo, segurar = anterior), teclas de volume opcionais e botões de fones com fio ou Bluetooth.
-- **Vozes**: texto para fala do Android com velocidade 0,25×–2,00× (segure − ou + para ajustar continuamente), tom, mecanismo e voz filtrados por região e uso offline, destaque palavra por palavra ou sua própria gravação por frase.
+- **Botões físicos**: obturador Sony (pressionar = próximo, segurar = continuar avançando), teclas de volume opcionais e botões de fones com fio ou Bluetooth.
+- **Vozes**: texto para fala do Android com velocidade 0,25×–2,00×, troca entre voz feminina e masculina, seis vozes prontas, voz e tom próprios para as falas do parceiro, destaque palavra por palavra ou sua própria gravação por frase.
 - **Biblioteca de roteiros**: armazenamento local em SQLite com busca por título, tags e texto, filtros por tag e histórico no estilo git: atualize um roteiro com um arquivo novo e restaure qualquer revisão anterior.
 - **Skill de conversão com IA**: `skills/earcue-script` transforma uma transcrição em Word, PDF ou slides em um `.earcue.json` com tags e confere palavra por palavra com o original.
 - **10 idiomas de interface**: com temas claro e escuro: English, 繁體中文, 简体中文, Español, Português (Brasil), 日本語, 한국어, Français, Deutsch, Русский.
@@ -138,6 +138,7 @@ EarCue/
 ├── tools/
 │   ├── i18n/              # UI string tables + generator
 │   ├── readme/            # README template + translations
+│   ├── audio/             # reminder tone generator
 │   └── demo/              # demo file builder
 ├── design/                # logo source
 └── docs/                  # installation, architecture, assets, README/ (translations)

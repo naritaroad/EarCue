@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.earcue.EarCueApp
 import app.earcue.R
+import app.earcue.audio.Earcons
 import app.earcue.audio.EngineState
 import app.earcue.data.DeckButton
 import app.earcue.data.DeckLayout
@@ -65,15 +66,17 @@ val UiLanguages = listOf(
 )
 
 @Composable
-fun SettingsScreen(app: EarCueApp, st: EngineState, settings: Settings, onBack: () -> Unit, onLayout: () -> Unit, onVoices: () -> Unit) {
+fun SettingsScreen(app: EarCueApp, st: EngineState, settings: Settings, onBack: () -> Unit, onLayout: () -> Unit, onVoices: (partner: Boolean) -> Unit) {
     val prefs = app.prefs
     val engine = app.engine
     var rate by remember(settings.rate) { mutableFloatStateOf(settings.rate) }
-    var pitch by remember { mutableFloatStateOf(settings.pitch) }
+    var pitch by remember(settings.pitch) { mutableFloatStateOf(settings.pitch) }
+    var partnerPitch by remember(settings.partnerPitch) { mutableFloatStateOf(settings.partnerPitch) }
     var textScale by remember { mutableFloatStateOf(settings.textScale) }
     var languagesOpen by remember { mutableStateOf(false) }
     val currentLanguage = remember { app.currentLanguage() }
     val sample = st.cues.firstOrNull { !it.isPartner }?.text ?: stringResource(R.string.voice_sample)
+    val partnerSample = st.cues.firstOrNull { it.isPartner }?.text ?: sample
 
     LazyColumn(Modifier.fillMaxSize().navigationBarsPadding(), contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 32.dp)) {
         item { ScreenHeader(stringResource(R.string.settings_title), onBack) }
@@ -177,21 +180,11 @@ fun SettingsScreen(app: EarCueApp, st: EngineState, settings: Settings, onBack: 
         item {
             SectionLabel(stringResource(R.string.set_voice))
             Card {
-                val current = st.voices.firstOrNull { it.name == st.voiceName }
-                Row(
-                    Modifier.fillMaxWidth().clickable(onClick = onVoices).padding(horizontal = 18.dp, vertical = 14.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Glyph(G.SPARK, Ink.amber, 18.dp)
-                    Column(Modifier.weight(1f).padding(start = 12.dp)) {
-                        Text(stringResource(R.string.voice_title), style = MaterialTheme.typography.bodyLarge, color = Ink.text)
-                        Text(
-                            current?.let { voiceLabel(it) } ?: stringResource(R.string.voice_system),
-                            style = MaterialTheme.typography.labelMedium, color = Ink.dim, maxLines = 1, overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                    Glyph(G.CHEVRON, Ink.dim, 16.dp)
-                }
+                VoiceRoleRow(
+                    title = stringResource(R.string.set_my_voice),
+                    detail = st.voices.firstOrNull { it.name == st.voiceName }?.let { voiceLabel(it) } ?: stringResource(R.string.voice_system),
+                    mark = genderMark(engine.myGender()),
+                ) { onVoices(false) }
                 Divider()
                 SliderRow(stringResource(R.string.set_rate), rate, RATE_MIN..RATE_MAX, String.format(Locale.US, "%.2f×", rate), { rate = it }) {
                     prefs.update { it.copy(rate = ((rate * 20).toInt() / 20f).coerceIn(RATE_MIN, RATE_MAX)) }
@@ -203,6 +196,23 @@ fun SettingsScreen(app: EarCueApp, st: EngineState, settings: Settings, onBack: 
                 }
                 Row(Modifier.padding(start = 18.dp, end = 18.dp, bottom = 16.dp)) {
                     PillButton(stringResource(R.string.set_preview), G.PLAY) { engine.preview(sample) }
+                }
+                Divider()
+                VoiceRoleRow(
+                    title = stringResource(R.string.set_partner_voice),
+                    detail = st.voices.firstOrNull { it.name == settings.partnerVoice }?.let { voiceLabel(it) }
+                        ?: stringResource(R.string.partner_auto),
+                    mark = genderMark(roleGender(app, st, settings, partner = true)),
+                ) { onVoices(true) }
+                Divider()
+                SliderRow(
+                    stringResource(R.string.set_partner_pitch), partnerPitch, 0.5f..2f, String.format(Locale.US, "%.2f", partnerPitch),
+                    { partnerPitch = it },
+                ) {
+                    prefs.update { it.copy(partnerPitch = (partnerPitch * 20).toInt() / 20f) }
+                }
+                Row(Modifier.padding(start = 18.dp, end = 18.dp, bottom = 16.dp)) {
+                    PillButton(stringResource(R.string.set_preview), G.PLAY) { engine.preview(partnerSample, partner = true) }
                 }
             }
         }
@@ -239,6 +249,16 @@ fun SettingsScreen(app: EarCueApp, st: EngineState, settings: Settings, onBack: 
             Card {
                 ToggleRow(stringResource(R.string.set_partner), stringResource(R.string.set_partner_hint), settings.speakPartner) { v -> prefs.update { it.copy(speakPartner = v) } }
                 Divider()
+                ToggleRow(stringResource(R.string.set_page_tone), stringResource(R.string.set_page_tone_hint), settings.pageTone) { v ->
+                    prefs.update { it.copy(pageTone = v) }
+                    if (v) engine.previewTone(Earcons.PAGE)
+                }
+                Divider()
+                ToggleRow(stringResource(R.string.set_turn_tone), stringResource(R.string.set_turn_tone_hint), settings.turnTone) { v ->
+                    prefs.update { it.copy(turnTone = v) }
+                    if (v) engine.previewTone(Earcons.TURN)
+                }
+                Divider()
                 ToggleRow(stringResource(R.string.set_auto), stringResource(R.string.set_auto_hint), settings.autoAdvance) { v -> prefs.update { it.copy(autoAdvance = v) } }
                 Divider()
                 ToggleRow(stringResource(R.string.set_speaker), stringResource(R.string.set_speaker_hint), settings.allowSpeaker) { v -> prefs.update { it.copy(allowSpeaker = v) } }
@@ -254,6 +274,7 @@ fun SettingsScreen(app: EarCueApp, st: EngineState, settings: Settings, onBack: 
                 Divider()
                 ToggleRow(stringResource(R.string.set_headset), stringResource(R.string.set_headset_hint), settings.headsetKeys) { v -> prefs.update { it.copy(headsetKeys = v) } }
             }
+            Text(stringResource(R.string.hint_hold), style = MaterialTheme.typography.labelMedium, color = Ink.faint, modifier = Modifier.padding(top = 8.dp, start = 4.dp))
         }
 
         item {
@@ -285,7 +306,7 @@ fun SettingsScreen(app: EarCueApp, st: EngineState, settings: Settings, onBack: 
 }
 
 @Composable
-private fun Segment(label: String, selected: Boolean, modifier: Modifier, onClick: () -> Unit) {
+fun Segment(label: String, selected: Boolean, modifier: Modifier, onClick: () -> Unit) {
     Box(
         modifier.clip(RoundedCornerShape(14.dp)).background(if (selected) Ink.amber else Ink.raised)
             .clickable(onClick = onClick).padding(vertical = 10.dp),
@@ -329,5 +350,21 @@ fun LayoutThumb(layout: DeckLayout, modifier: Modifier = Modifier) {
                 cornerRadius = CornerRadius(6.dp.toPx()),
             )
         }
+    }
+}
+
+@Composable
+private fun VoiceRoleRow(title: String, detail: String, mark: String, onClick: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 18.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Glyph(G.SPARK, Ink.amber, 18.dp)
+        Column(Modifier.weight(1f).padding(start = 12.dp)) {
+            Text(title, style = MaterialTheme.typography.bodyLarge, color = Ink.text)
+            Text(detail, style = MaterialTheme.typography.labelMedium, color = Ink.dim, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        }
+        if (mark.isNotEmpty()) Text(mark, style = MaterialTheme.typography.titleMedium, color = Ink.sky, modifier = Modifier.padding(end = 8.dp))
+        Glyph(G.CHEVRON, Ink.dim, 16.dp)
     }
 }

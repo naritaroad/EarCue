@@ -12,6 +12,9 @@ data class Settings(
     val rate: Float = 1.0f,
     val pitch: Float = 1.0f,
     val voice: String = "",
+    /** Voice for co-presenter lines; "" = automatic, a voice of the other gender than [voice]. */
+    val partnerVoice: String = "",
+    val partnerPitch: Float = 1.0f,
     /** Voice picker filter: only show voices that work without network. */
     val offlineVoices: Boolean = true,
     val engine: String = "",
@@ -20,6 +23,10 @@ data class Settings(
     val headsetKeys: Boolean = true,
     val autoAdvance: Boolean = false,
     val speakPartner: Boolean = false,
+    /** Chime before the first line of a new slide. */
+    val pageTone: Boolean = true,
+    /** Chime after a line when the next line belongs to someone else. */
+    val turnTone: Boolean = true,
     val allowSpeaker: Boolean = false,
     val tapHaptics: Boolean = true,
     val overtimeHaptics: Boolean = true,
@@ -52,6 +59,15 @@ class Prefs(context: Context) {
         write(next)
     }
 
+    /** Detected voice genders, cached per engine and voice name: "m"/"f"/"?" plus the measured pitch in Hz. */
+    private val genders = context.getSharedPreferences("earcue-voice-gender", Context.MODE_PRIVATE)
+
+    fun cachedGender(engine: String, voice: String): String? = genders.getString("$engine|$voice", null)
+
+    fun cacheGender(engine: String, voice: String, value: String) {
+        genders.edit().putString("$engine|$voice", value).apply()
+    }
+
     private fun read() = Settings(
         leftHanded = sp.getBoolean("leftHanded", false),
         preset = sp.getInt("preset", 0),
@@ -59,6 +75,8 @@ class Prefs(context: Context) {
         rate = sp.getFloat("rate", 1f),
         pitch = sp.getFloat("pitch", 1f),
         voice = sp.getString("voice", "") ?: "",
+        partnerVoice = sp.getString("partnerVoice", "") ?: "",
+        partnerPitch = sp.getFloat("partnerPitch", 1f),
         offlineVoices = sp.getBoolean("offlineVoices", true),
         engine = sp.getString("engine", "") ?: "",
         shutterKey = sp.getBoolean("shutterKey", true),
@@ -66,6 +84,8 @@ class Prefs(context: Context) {
         headsetKeys = sp.getBoolean("headsetKeys", true),
         autoAdvance = sp.getBoolean("autoAdvance", false),
         speakPartner = sp.getBoolean("speakPartner", false),
+        pageTone = sp.getBoolean("pageTone", true),
+        turnTone = sp.getBoolean("turnTone", true),
         allowSpeaker = sp.getBoolean("allowSpeaker", false),
         tapHaptics = sp.getBoolean("tapHaptics", true),
         overtimeHaptics = sp.getBoolean("overtimeHaptics", true),
@@ -85,6 +105,8 @@ class Prefs(context: Context) {
             .putFloat("rate", s.rate)
             .putFloat("pitch", s.pitch)
             .putString("voice", s.voice)
+            .putString("partnerVoice", s.partnerVoice)
+            .putFloat("partnerPitch", s.partnerPitch)
             .putBoolean("offlineVoices", s.offlineVoices)
             .putString("engine", s.engine)
             .putBoolean("shutterKey", s.shutterKey)
@@ -92,6 +114,8 @@ class Prefs(context: Context) {
             .putBoolean("headsetKeys", s.headsetKeys)
             .putBoolean("autoAdvance", s.autoAdvance)
             .putBoolean("speakPartner", s.speakPartner)
+            .putBoolean("pageTone", s.pageTone)
+            .putBoolean("turnTone", s.turnTone)
             .putBoolean("allowSpeaker", s.allowSpeaker)
             .putBoolean("tapHaptics", s.tapHaptics)
             .putBoolean("overtimeHaptics", s.overtimeHaptics)

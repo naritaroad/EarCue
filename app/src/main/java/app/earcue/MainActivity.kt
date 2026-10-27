@@ -6,25 +6,16 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.LocaleList
-import android.os.Looper
 import android.view.KeyEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import app.earcue.data.DeckButton
 import app.earcue.ui.AppRoot
 
 class MainActivity : ComponentActivity() {
     private val app get() = application as EarCueApp
-    private val handler = Handler(Looper.getMainLooper())
-
-    // Sony shutter button: short press = next, hold = previous.
-    private var shutterLongFired = false
-    private val shutterHold = Runnable {
-        shutterLongFired = true
-        app.engine.prev()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -59,13 +50,9 @@ class MainActivity : ComponentActivity() {
         when (e.keyCode) {
             KeyEvent.KEYCODE_CAMERA -> {
                 if (!settings.shutterKey) return false
-                if (first) {
-                    shutterLongFired = false
-                    handler.postDelayed(shutterHold, SHUTTER_HOLD_MS)
-                } else if (e.action == KeyEvent.ACTION_UP) {
-                    handler.removeCallbacks(shutterHold)
-                    if (!shutterLongFired) engine.next()
-                }
+                // Sony shutter: press = next at once, hold = keep skipping forward (same as holding the Next button).
+                if (first) engine.press(DeckButton.NEXT)
+                else if (e.action == KeyEvent.ACTION_UP) engine.release()
                 return true
             }
             // Half-press of the shutter: swallow it so the camera app never wakes up.
@@ -121,7 +108,4 @@ class MainActivity : ComponentActivity() {
         super.attachBaseContext(newBase.createConfigurationContext(config))
     }
 
-    companion object {
-        const val SHUTTER_HOLD_MS = 550L
-    }
 }
