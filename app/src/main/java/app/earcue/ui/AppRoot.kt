@@ -36,7 +36,7 @@ import androidx.compose.ui.res.stringResource
 import app.earcue.EarCueApp
 import app.earcue.R
 
-enum class Screen { HOME, CUES, CUE, LIBRARY, SCRIPT, IMPORT, SETTINGS, VOICES, LAYOUT, STAGE }
+enum class Screen { HOME, CUES, CUE, LIBRARY, SCRIPT, IMPORT, SETTINGS, VOICES, LAYOUT, STAGE, OVERLAY }
 
 @Composable
 fun AppRoot(app: EarCueApp, activity: ComponentActivity) {
@@ -113,10 +113,11 @@ private fun Screens(app: EarCueApp, activity: ComponentActivity) {
                     onPasteRevision = { importTarget = scriptId; go(Screen.IMPORT) },
                 )
                 Screen.IMPORT -> ImportScreen(app, importTarget, ::back) { if (importTarget != null) back() else home() }
-                Screen.SETTINGS -> SettingsScreen(app, st, settings, ::back, onLayout = { go(Screen.LAYOUT) }, onVoices = { voicePartner = it; go(Screen.VOICES) })
+                Screen.SETTINGS -> SettingsScreen(app, st, settings, ::back, onLayout = { go(Screen.LAYOUT) }, onVoices = { voicePartner = it; go(Screen.VOICES) }, onOverlay = { go(Screen.OVERLAY) })
                 Screen.VOICES -> VoicesScreen(app, st, settings, voicePartner, onRole = { voicePartner = it }, onBack = ::back)
                 Screen.LAYOUT -> LayoutEditorScreen(app, settings, ::back)
                 Screen.STAGE -> StageScreen(app, st, settings, ::back)
+                Screen.OVERLAY -> OverlayScreen(app, st, settings, ::back)
             }
         }
         NoticeHost(notice, Modifier.align(Alignment.TopCenter))

@@ -25,6 +25,7 @@ Android 耳機提詞 App：把講稿唸進你的耳機，拇指按一下就換�
 - **耳機保護**: 沒接耳機，或媒體音量為 0 時，按播放類按鍵只會強震三下，不發出任何聲音；播放中拔掉耳機會立刻停止。
 - **單手拇指操作**: 三種預設按鍵配置，可拖曳移動、拖曳調整大小並一鍵還原；左右手鏡像；手機藏在背後時用的全黑舞台模式。
 - **實體按鍵**: Sony 快門鍵（短按＝下一段、按住＝連續往後跳）、可選的音量鍵，以及有線或藍牙耳機按鍵。
+- **浮動控制**: 在簡報或其他 App 上層保留「下一段」「上一段」「播放」。有控制列、側邊欄、提詞卡、泡泡四種樣式，可挑要顯示的按鍵與資訊，並調整按鍵大小、文字大小、卡片寬度和不透明度。也能另外浮出講稿文字展示，文字區不攔截觸控，底下的 App 照常能點。兩者的位置和大小都能在設定裡的模擬畫面上用手指拖曳調整，也能把講稿框與按鍵合為一體、一起移動。回到 EarCue 時自動隱藏。
 - **聲音**: Android 文字轉語音，語速 0.25×–2.00×，可一鍵切換男聲女聲、六種預設聲音，搭檔台詞可另設聲音與音調；逐字高亮，也能為每一句錄下自己的聲音。
 - **講稿庫**: 存在本機 SQLite，可搜尋標題、標籤與內文，用標籤分類，並有類似 git 的歷史：用新檔案更新講稿，也能回退到任何舊版本。
 - **AI 轉檔 skill**: `skills/earcue-script` 把 Word、PDF 或投影片講稿轉成含標籤的 `.earcue.json`，並與原稿逐字比對。
@@ -70,7 +71,7 @@ flowchart LR
 | 儲存 | 平台內建 `SQLiteOpenHelper`（不用 ORM），設定存在 SharedPreferences |
 | 語音 | `TextToSpeech`；自己的錄音用 `MediaPlayer`；耳機按鍵用 `MediaSession` |
 | 建置 | Android Gradle Plugin 8.7.3、Gradle 8.11.1、compileSdk 35、minSdk 26 |
-| Release APK | 約 1.4 MB，以 R8 縮減 |
+| Release APK | 約 1.5 MB，以 R8 縮減 |
 
 </details>
 
@@ -109,6 +110,9 @@ flowchart LR
 |---|---|
 | `VIBRATE` | 震動回饋與耳機保護警示 |
 | `RECORD_AUDIO` | 只在你為某一句錄自己的聲音時使用，當下才詢問 |
+| `SYSTEM_ALERT_WINDOW` | 在其他 App 上層顯示浮動控制；由你在系統設定中允許 |
+| `FOREGROUND_SERVICE_MEDIA_PLAYBACK` | 其他 App 在前景時，讓朗讀與浮動控制持續運作 |
+| `POST_NOTIFICATIONS` | 顯示「浮動控制已開啟」通知，並可從通知關閉 |
 
 App 沒有宣告網路權限。需要網路的 TTS 聲音由語音引擎下載，不經過 EarCue。
 
@@ -131,7 +135,7 @@ App 沒有宣告網路權限。需要網路的 TTS 聲音由語音引擎下載�
 ```
 EarCue/
 ├── app/src/main/
-│   ├── java/app/earcue/   # audio/ data/ ui/
+│   ├── java/app/earcue/   # audio/ data/ overlay/ ui/
 │   └── res/               # icons, strings × 10 languages (generated)
 ├── skills/earcue-script/  # AI conversion skill
 ├── examples/green-streets/# fictional demo

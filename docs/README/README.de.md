@@ -25,6 +25,7 @@ Ein Android-Prompter, der deinen Vortrag in die Kopfhörer liest, ein Satz pro D
 - **Kopfhörerschutz**: ohne Kopfhörer oder bei Medienlautstärke 0 vibrieren die Wiedergabetasten dreimal und bleiben stumm. Kopfhörer abziehen stoppt die Wiedergabe.
 - **Bedienung mit einem Daumen**: drei Tastenlayouts, Verschieben und Größe ändern per Ziehen mit Zurücksetzen, Spiegelung für Links- und Rechtshänder und ein schwarzer Bühnenmodus für das Telefon hinter dem Rücken.
 - **Hardwaretasten**: Sony-Auslöser (drücken = weiter, halten = weiter springen), optional Lautstärketasten sowie Tasten kabelgebundener oder Bluetooth-Kopfhörer.
+- **Schwebende Steuerung**: Weiter, Zurück und Abspielen bleiben über der Folien-App oder jeder anderen App. Vier Stile (Leiste, Seitenspalte, Karte, Blase), frei wählbare Tasten und Infos sowie einstellbare Tasten- und Textgröße, Kartenbreite und Deckkraft. Auch der Skripttext kann darüber schweben; er nimmt keine Berührungen an, die App darunter bleibt bedienbar. Position und Größe von beidem stellst du per Ziehen auf einem verkleinerten Bildschirm in den Einstellungen ein, oder du verbindest den Skripttext mit den Tasten, damit beides zusammen wandert. Sie verschwindet, wenn du zu EarCue zurückkehrst.
 - **Stimmen**: Android-Sprachausgabe mit Tempo 0,25×–2,00×, Umschalter weiblich/männlich, sechs voreingestellte Stimmen, eigene Stimme und Tonhöhe für Partnersätze, wortweises Hervorheben oder eigene Aufnahme pro Satz.
 - **Skriptbibliothek**: lokale SQLite-Speicherung mit Suche in Titeln, Tags und Text, Tag-Filtern und einem Verlauf wie bei git: Skript aus neuer Datei aktualisieren und jede frühere Revision wiederherstellen.
 - **KI-Konvertierungs-Skill**: `skills/earcue-script` wandelt ein Word-, PDF- oder Folien-Transkript in eine `.earcue.json` mit Tags um und prüft sie Wort für Wort gegen die Quelle.
@@ -70,7 +71,7 @@ Jeder Import wird zu einer Revision des Skripts, die aktuelle Revision wird in A
 | Speicher | Plattform-`SQLiteOpenHelper` (kein ORM), SharedPreferences für Einstellungen |
 | Sprache/Audio | `TextToSpeech`, `MediaPlayer` für eigene Aufnahmen, `MediaSession` für Kopfhörertasten |
 | Build | Android Gradle Plugin 8.7.3, Gradle 8.11.1, compileSdk 35, minSdk 26 |
-| Release-APK | etwa 1,4 MB, mit R8 verkleinert |
+| Release-APK | etwa 1,5 MB, mit R8 verkleinert |
 
 </details>
 
@@ -109,6 +110,9 @@ Ein einfaches Textformat zum Einfügen wird ebenfalls akzeptiert. Vollständige 
 |---|---|
 | `VIBRATE` | Haptisches Feedback und Warnung des Kopfhörerschutzes |
 | `RECORD_AUDIO` | Nur beim Aufnehmen der eigenen Stimme für einen Satz; wird dann abgefragt |
+| `SYSTEM_ALERT_WINDOW` | Schwebende Steuerung über anderen Apps; du erlaubst sie in den Systemeinstellungen |
+| `FOREGROUND_SERVICE_MEDIA_PLAYBACK` | Hält Sprachausgabe und schwebende Steuerung aktiv, während eine andere App vorne ist |
+| `POST_NOTIFICATIONS` | Die Benachrichtigung, dass die schwebende Steuerung an ist, mit der du sie ausschaltest |
 
 Die App deklariert keine Internetberechtigung. Online-TTS-Stimmen lädt die Sprachausgabe, nicht EarCue.
 
@@ -131,7 +135,7 @@ Vollständige Anleitung inklusive Einrichtung des KI-Skills: [docs/installation.
 ```
 EarCue/
 ├── app/src/main/
-│   ├── java/app/earcue/   # audio/ data/ ui/
+│   ├── java/app/earcue/   # audio/ data/ overlay/ ui/
 │   └── res/               # icons, strings × 10 languages (generated)
 ├── skills/earcue-script/  # AI conversion skill
 ├── examples/green-streets/# fictional demo

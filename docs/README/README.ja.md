@@ -25,6 +25,7 @@
 - **イヤホン保護**: イヤホン未接続やメディア音量 0 のときは、再生系ボタンが 3 回振動するだけで音は出ません。再生中にイヤホンが外れると停止します。
 - **親指ひとつで操作**: 3 種類のボタン配置、ドラッグで移動・サイズ変更と初期化、左右反転、スマホを背中に隠すための黒いステージモード。
 - **物理ボタン**: Sony のシャッターボタン（押す＝次へ、長押し＝先へ連続で進む）、任意で音量キー、有線・Bluetooth イヤホンのボタン。
+- **フローティング操作**: スライドアプリなど他のアプリの上に「次へ」「前へ」「再生」を表示したままにできます。バー、サイド列、キューカード、バブルの 4 スタイル。表示するボタンと情報を選び、ボタンと文字の大きさ、カードの幅、不透明度を調整できます。原稿テキストも重ねて表示でき、タッチを受け取らないので下のアプリはそのまま操作できます。どちらも設定の縮小画面上でドラッグして位置とサイズを調整でき、原稿の枠をボタンと一体にして一緒に動かすこともできます。EarCue に戻ると隠れます。
 - **音声**: Android の音声合成で速度 0.25×–2.00×、男性・女性の切り替え、6 種類のプリセット音声、パートナーのセリフ用の音声とピッチ、単語ごとのハイライト、各文に自分の録音も使えます。
 - **原稿ライブラリ**: 端末内の SQLite に保存し、タイトル・タグ・本文を検索、タグで分類。git のような履歴で、新しいファイルで更新し、過去の版にいつでも戻せます。
 - **AI 変換 skill**: `skills/earcue-script` が Word・PDF・スライドの原稿をタグ付きの `.earcue.json` に変換し、元の原稿と一字一句照合します。
@@ -70,7 +71,7 @@ flowchart LR
 | 保存 | プラットフォームの `SQLiteOpenHelper`（ORM なし）、設定は SharedPreferences |
 | 音声 | `TextToSpeech`、自分の録音は `MediaPlayer`、イヤホンのボタンは `MediaSession` |
 | ビルド | Android Gradle Plugin 8.7.3、Gradle 8.11.1、compileSdk 35、minSdk 26 |
-| リリース APK | 約 1.4 MB、R8 で縮小 |
+| リリース APK | 約 1.5 MB、R8 で縮小 |
 
 </details>
 
@@ -109,6 +110,9 @@ flowchart LR
 |---|---|
 | `VIBRATE` | 触覚フィードバックとイヤホン保護の警告 |
 | `RECORD_AUDIO` | 文に自分の声を録音するときだけ。その時点で確認します |
+| `SYSTEM_ALERT_WINDOW` | 他のアプリの上にフローティング操作を表示。システム設定であなたが許可します |
+| `FOREGROUND_SERVICE_MEDIA_PLAYBACK` | 他のアプリが前面にあるあいだも読み上げとフローティング操作を続けます |
+| `POST_NOTIFICATIONS` | フローティング操作がオンであることを示し、オフにできる通知 |
 
 アプリはインターネット権限を宣言していません。オンラインの TTS 音声は EarCue ではなく音声エンジンが取得します。
 
@@ -131,7 +135,7 @@ AI skill の設定を含む完全ガイド： [docs/installation.md](../installa
 ```
 EarCue/
 ├── app/src/main/
-│   ├── java/app/earcue/   # audio/ data/ ui/
+│   ├── java/app/earcue/   # audio/ data/ overlay/ ui/
 │   └── res/               # icons, strings × 10 languages (generated)
 ├── skills/earcue-script/  # AI conversion skill
 ├── examples/green-streets/# fictional demo

@@ -9,6 +9,7 @@ T = dict(
         ("Earphone guard", "with no earphones connected, or with media volume at 0, play buttons vibrate three times and make no sound. Unplugging mid-line stops playback."),
         ("One-thumb control", "three preset button layouts, drag-to-move and drag-to-resize editing with reset, a left/right-hand mirror, and a black Stage mode for a phone held behind your back."),
         ("Hardware buttons", "Sony shutter button (press = next, hold = keep skipping), optional volume keys, and wired or Bluetooth earphone buttons."),
+        ("Floating controls", "keep Next, Previous and Play over a slide app or any other app. Four styles (bar, side column, cue card, bubble), pick which buttons and info to show, and set button size, text size, card width and opacity. A script text display can float on top too; it never takes a touch, so the app underneath stays usable. Place and size both on a scaled-down screen in Settings, or join the script box to the buttons so they move as one. They hide when you return to EarCue."),
 
         ("Voices", "Android text-to-speech with speed 0.25×–2.00×, a female/male switch, six preset voices, a separate voice and pitch for partner lines, word-by-word highlighting, or your own recording per line."),
 
@@ -28,7 +29,7 @@ T = dict(
         ("Storage", "Platform `SQLiteOpenHelper` (no ORM), SharedPreferences for settings"),
         ("Speech", "`TextToSpeech`, `MediaPlayer` for own recordings, `MediaSession` for earphone buttons"),
         ("Build", "Android Gradle Plugin 8.7.3, Gradle 8.11.1, compileSdk 35, minSdk 26"),
-        ("Release APK", "about 1.4 MB, minified with R8"),
+        ("Release APK", "about 1.5 MB, minified with R8"),
     ],
     sum_format="Script format",
     format_text="A plain-text format for pasting is also accepted. Full specification:",
@@ -36,6 +37,9 @@ T = dict(
     perm_rows=[
         ("VIBRATE", "Haptic feedback and the earphone-guard warning"),
         ("RECORD_AUDIO", "Only when you record your own voice for a line; asked at that moment"),
+        ("SYSTEM_ALERT_WINDOW", "Floating controls over other apps; granted by you in system settings"),
+        ("FOREGROUND_SERVICE_MEDIA_PLAYBACK", "Keeps speech and the floating controls running while another app is in front"),
+        ("POST_NOTIFICATIONS", "The notification that shows the floating controls are on and turns them off"),
     ],
     perm_net="The app declares no internet permission. Online TTS voices are fetched by the speech engine, not by EarCue.",
     h_install="Installation",

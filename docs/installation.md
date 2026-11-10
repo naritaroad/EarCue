@@ -47,6 +47,18 @@ A file whose title matches an existing script can be saved as a new revision of 
 - In **Buttons**, choose a layout, or drag the buttons to fit your hand.
 - On Sony Xperia phones, the shutter button works as Next: press for the next line, hold to keep skipping forward. Hold the on-screen Play button to restart from the first line.
 
+## Floating controls (optional)
+
+To keep the controls over a slide app or any other app, open **Settings › Floating controls** and turn on **Show floating controls**. Android asks for the **Display over other apps** permission.
+
+On Android 13 and later, the switch for that permission is greyed out for apps installed from an APK. Unlock it once:
+
+1. In EarCue, tap **Open App info** under the permission note (or go to **Settings › Apps › EarCue**).
+2. Tap **⋮** in the top right and choose **Allow restricted settings**, then confirm with your fingerprint or PIN.
+3. Go back to **Display over other apps › EarCue** and turn the switch on.
+
+While another app is in front, the Sony shutter, volume keys and earphone buttons belong to that app or the system, so control EarCue with the floating buttons.
+
 ## Build from source
 
 Requirements: JDK 17 and Android SDK Platform 35 with Build-tools 35. Create `local.properties` with `sdk.dir=<path to the SDK>`.

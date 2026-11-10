@@ -73,7 +73,7 @@ FORMAT = """```json
 TREE = """```
 EarCue/
 ├── app/src/main/
-│   ├── java/app/earcue/   # audio/ data/ ui/
+│   ├── java/app/earcue/   # audio/ data/ overlay/ ui/
 │   └── res/               # icons, strings × 10 languages (generated)
 ├── skills/earcue-script/  # AI conversion skill
 ├── examples/green-streets/# fictional demo

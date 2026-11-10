@@ -66,7 +66,9 @@ val UiLanguages = listOf(
 )
 
 @Composable
-fun SettingsScreen(app: EarCueApp, st: EngineState, settings: Settings, onBack: () -> Unit, onLayout: () -> Unit, onVoices: (partner: Boolean) -> Unit) {
+fun SettingsScreen(
+    app: EarCueApp, st: EngineState, settings: Settings, onBack: () -> Unit, onLayout: () -> Unit, onVoices: (partner: Boolean) -> Unit, onOverlay: () -> Unit,
+) {
     val prefs = app.prefs
     val engine = app.engine
     var rate by remember(settings.rate) { mutableFloatStateOf(settings.rate) }
@@ -262,6 +264,28 @@ fun SettingsScreen(app: EarCueApp, st: EngineState, settings: Settings, onBack: 
                 ToggleRow(stringResource(R.string.set_auto), stringResource(R.string.set_auto_hint), settings.autoAdvance) { v -> prefs.update { it.copy(autoAdvance = v) } }
                 Divider()
                 ToggleRow(stringResource(R.string.set_speaker), stringResource(R.string.set_speaker_hint), settings.allowSpeaker) { v -> prefs.update { it.copy(allowSpeaker = v) } }
+            }
+        }
+
+        // ---- floating controls ----
+        item {
+            SectionLabel(stringResource(R.string.ov_title))
+            Card {
+                Row(
+                    Modifier.fillMaxWidth().clickable(onClick = onOverlay).padding(horizontal = 18.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Glyph(G.FLOAT, if (settings.overlayOn) Ink.amber else Ink.dim, 20.dp)
+                    Column(Modifier.weight(1f).padding(start = 12.dp)) {
+                        Text(stringResource(R.string.ov_enable), style = MaterialTheme.typography.bodyLarge, color = Ink.text)
+                        Text(
+                            if (settings.overlayOn) stringResource(R.string.ov_on_style, stringResource(settings.overlay.style.label))
+                            else stringResource(R.string.ov_off),
+                            style = MaterialTheme.typography.labelMedium, color = Ink.dim,
+                        )
+                    }
+                    Glyph(G.CHEVRON, Ink.dim, 16.dp)
+                }
             }
         }
 

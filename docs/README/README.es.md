@@ -25,6 +25,7 @@ Un apuntador para Android que lee tu discurso en tus auriculares, una frase por 
 - **Protección de auriculares**: sin auriculares conectados o con el volumen multimedia en 0, los botones de reproducción vibran tres veces y no suenan. Desconectar los auriculares detiene la reproducción.
 - **Control con un pulgar**: tres diseños de botones, edición arrastrando para mover y redimensionar con restablecimiento, espejo para zurdos y diestros, y un modo Escenario negro para el teléfono a la espalda.
 - **Botones físicos**: obturador Sony (pulsar = siguiente, mantener = seguir avanzando), teclas de volumen opcionales y botones de auriculares con cable o Bluetooth.
+- **Controles flotantes**: mantén Siguiente, Anterior y Reproducir sobre la app de diapositivas o cualquier otra. Cuatro estilos (barra, columna lateral, tarjeta, burbuja), eliges qué botones e información mostrar y ajustas el tamaño de botones y texto, el ancho de la tarjeta y la opacidad. También puede flotar el texto del guion; no recibe toques, así que la app de abajo sigue usable. La posición y el tamaño de ambos se ajustan arrastrando sobre una pantalla en miniatura en Ajustes, o el guion se une a los botones para moverse juntos. Se ocultan al volver a EarCue.
 - **Voces**: texto a voz de Android con velocidad 0,25×–2,00×, cambio entre voz femenina y masculina, seis voces predefinidas, voz y tono propios para las frases del compañero, resaltado palabra por palabra o tu propia grabación por frase.
 - **Biblioteca de guiones**: almacenamiento local en SQLite con búsqueda por título, etiquetas y texto, filtros por etiqueta e historial al estilo git: actualiza un guion con un archivo nuevo y restaura cualquier revisión anterior.
 - **Skill de conversión con IA**: `skills/earcue-script` convierte una transcripción de Word, PDF o diapositivas en un `.earcue.json` con etiquetas y lo compara palabra por palabra con el original.
@@ -70,7 +71,7 @@ Cada importación se convierte en una revisión del guion, y la revisión actual
 | Almacenamiento | `SQLiteOpenHelper` de la plataforma (sin ORM), SharedPreferences para ajustes |
 | Voz | `TextToSpeech`, `MediaPlayer` para grabaciones propias, `MediaSession` para botones de auriculares |
 | Compilación | Android Gradle Plugin 8.7.3, Gradle 8.11.1, compileSdk 35, minSdk 26 |
-| APK de release | unos 1,4 MB, reducido con R8 |
+| APK de release | unos 1,5 MB, reducido con R8 |
 
 </details>
 
@@ -109,6 +110,9 @@ También se acepta un formato de texto simple para pegar. Especificación comple
 |---|---|
 | `VIBRATE` | Respuesta háptica y aviso de protección de auriculares |
 | `RECORD_AUDIO` | Solo al grabar tu propia voz para una frase; se pide en ese momento |
+| `SYSTEM_ALERT_WINDOW` | Controles flotantes sobre otras apps; lo concedes tú en los ajustes del sistema |
+| `FOREGROUND_SERVICE_MEDIA_PLAYBACK` | Mantiene la voz y los controles flotantes activos mientras otra app está delante |
+| `POST_NOTIFICATIONS` | La notificación que indica que los controles flotantes están activos y permite desactivarlos |
 
 La app no declara permiso de internet. Las voces TTS en línea las descarga el motor de voz, no EarCue.
 
@@ -131,7 +135,7 @@ Guía completa, incluida la configuración de la skill de IA: [docs/installation
 ```
 EarCue/
 ├── app/src/main/
-│   ├── java/app/earcue/   # audio/ data/ ui/
+│   ├── java/app/earcue/   # audio/ data/ overlay/ ui/
 │   └── res/               # icons, strings × 10 languages (generated)
 ├── skills/earcue-script/  # AI conversion skill
 ├── examples/green-streets/# fictional demo

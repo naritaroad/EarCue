@@ -9,6 +9,7 @@ T = dict(
         ("Protection des écouteurs", "sans écouteurs ou avec le volume multimédia à 0, les boutons de lecture vibrent trois fois sans émettre de son. Débrancher les écouteurs arrête la lecture."),
         ("Contrôle au pouce", "trois dispositions de boutons, édition par glisser pour déplacer et redimensionner avec réinitialisation, miroir gaucher/droitier et un mode Scène noir pour le téléphone tenu dans le dos."),
         ("Boutons physiques", "déclencheur Sony (appui = suivant, maintien = continuer à avancer), touches de volume en option et boutons d'écouteurs filaires ou Bluetooth."),
+        ("Commandes flottantes", "gardez Suivant, Précédent et Lire au-dessus de l'appli de diapositives ou de toute autre appli. Quatre styles (barre, colonne latérale, fiche, bulle), choix des boutons et infos affichés, réglage de la taille des boutons et du texte, de la largeur de la fiche et de l'opacité. Le texte du script peut aussi flotter ; il ne capte aucun toucher, l'appli en dessous reste utilisable. Position et taille des deux se règlent en les faisant glisser sur un écran miniature dans les paramètres, ou le script se joint aux boutons pour bouger avec eux. Elles se masquent au retour dans EarCue."),
 
         ("Voix", "synthèse vocale Android avec vitesse de 0,25× à 2,00×, bascule voix féminine/masculine, six voix prédéfinies, voix et hauteur propres aux répliques du partenaire, surlignage mot à mot ou votre propre enregistrement par phrase."),
 
@@ -28,7 +29,7 @@ T = dict(
         ("Stockage", "`SQLiteOpenHelper` de la plateforme (sans ORM), SharedPreferences pour les réglages"),
         ("Voix", "`TextToSpeech`, `MediaPlayer` pour vos enregistrements, `MediaSession` pour les boutons d'écouteurs"),
         ("Compilation", "Android Gradle Plugin 8.7.3, Gradle 8.11.1, compileSdk 35, minSdk 26"),
-        ("APK de release", "environ 1,4 Mo, réduit avec R8"),
+        ("APK de release", "environ 1,5 Mo, réduit avec R8"),
     ],
     sum_format="Format du script",
     format_text="Un format texte simple à coller est aussi accepté. Spécification complète :",
@@ -36,6 +37,9 @@ T = dict(
     perm_rows=[
         ("VIBRATE", "Retour haptique et alerte de protection des écouteurs"),
         ("RECORD_AUDIO", "Seulement pour enregistrer votre voix sur une phrase ; demandée à ce moment-là"),
+        ("SYSTEM_ALERT_WINDOW", "Commandes flottantes au-dessus des autres applis ; c'est vous qui l'accordez dans les paramètres système"),
+        ("FOREGROUND_SERVICE_MEDIA_PLAYBACK", "Garde la voix et les commandes flottantes actives quand une autre appli est au premier plan"),
+        ("POST_NOTIFICATIONS", "La notification qui signale les commandes flottantes et permet de les désactiver"),
     ],
     perm_net="L'application ne déclare aucune autorisation Internet. Les voix TTS en ligne sont téléchargées par le moteur vocal, pas par EarCue.",
     h_install="Installation",

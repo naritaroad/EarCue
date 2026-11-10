@@ -32,6 +32,9 @@ class EarCueApp : Application() {
     val notice = MutableStateFlow<Notice?>(null)
     val pendingImport = MutableStateFlow<PendingImport?>(null)
 
+    /** True while EarCue's own screen is visible; the floating controls show only when it is not. */
+    val inForeground = MutableStateFlow(false)
+
     /** Bumped after an import creates or switches the active script, so the UI can return home. */
     val imported = MutableStateFlow(0)
 

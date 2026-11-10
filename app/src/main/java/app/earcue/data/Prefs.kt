@@ -38,6 +38,9 @@ data class Settings(
     val theme: String = "system",
     /** BCP-47 tag of the UI language, "" = follow the system. Applied by the platform on Android 13+. */
     val language: String = "",
+    /** Floating controls over other apps; shown while EarCue is in the background. */
+    val overlayOn: Boolean = false,
+    val overlay: OverlaySettings = OverlaySettings(),
 ) {
     /** The layout the home screen actually draws, already mirrored for the user's hand. */
     val deck: DeckLayout get() = (customLayout ?: Presets.all[preset.coerceIn(Presets.all.indices)].layout).forHand(leftHanded)
@@ -95,6 +98,28 @@ class Prefs(context: Context) {
         lastScript = sp.getLong("lastScript", -1),
         theme = sp.getString("theme", "system") ?: "system",
         language = sp.getString("language", "") ?: "",
+        overlayOn = sp.getBoolean("overlayOn", false),
+        overlay = OverlaySettings(
+            style = OverlayStyle.entries.firstOrNull { it.name == sp.getString("overlayStyle", null) } ?: OverlayStyle.BAR,
+            items = OverlaySettings.decodeItems(sp.getString("overlayItems", null)),
+            button = sp.getInt("overlayButton", OverlaySize.DEFAULT_BUTTON),
+            text = sp.getInt("overlayText", OverlaySize.DEFAULT_TEXT),
+            width = sp.getInt("overlayWidth", OverlaySize.DEFAULT_WIDTH),
+            opacity = sp.getFloat("overlayOpacity", OverlaySize.DEFAULT_OPACITY),
+            x = sp.getInt("overlayX", -1),
+            y = sp.getInt("overlayY", -1),
+            scriptOn = sp.getBoolean("scriptOn", false),
+            scriptText = sp.getInt("scriptText", OverlaySize.DEFAULT_SCRIPT_TEXT),
+            scriptLines = sp.getInt("scriptLines", OverlaySize.DEFAULT_SCRIPT_LINES),
+            scriptWidth = sp.getInt("scriptWidth", OverlaySize.DEFAULT_SCRIPT_WIDTH),
+            scriptHeight = sp.getInt("scriptHeight", 0),
+            scriptX = sp.getInt("scriptX", -1),
+            scriptY = sp.getInt("scriptY", OverlaySize.DEFAULT_SCRIPT_Y),
+            scriptBg = sp.getFloat("scriptBg", OverlaySize.DEFAULT_SCRIPT_BG),
+            scriptInk = sp.getFloat("scriptInk", OverlaySize.DEFAULT_SCRIPT_INK),
+            scriptAttach = sp.getBoolean("scriptAttach", false),
+            scriptBelow = sp.getBoolean("scriptBelow", false),
+        ),
     )
 
     private fun write(s: Settings) {
@@ -125,6 +150,26 @@ class Prefs(context: Context) {
             .putLong("lastScript", s.lastScript)
             .putString("theme", s.theme)
             .putString("language", s.language)
+            .putBoolean("overlayOn", s.overlayOn)
+            .putString("overlayStyle", s.overlay.style.name)
+            .putString("overlayItems", s.overlay.encodeItems())
+            .putInt("overlayButton", s.overlay.button)
+            .putInt("overlayText", s.overlay.text)
+            .putInt("overlayWidth", s.overlay.width)
+            .putFloat("overlayOpacity", s.overlay.opacity)
+            .putInt("overlayX", s.overlay.x)
+            .putInt("overlayY", s.overlay.y)
+            .putBoolean("scriptOn", s.overlay.scriptOn)
+            .putInt("scriptText", s.overlay.scriptText)
+            .putInt("scriptLines", s.overlay.scriptLines)
+            .putInt("scriptWidth", s.overlay.scriptWidth)
+            .putInt("scriptHeight", s.overlay.scriptHeight)
+            .putInt("scriptX", s.overlay.scriptX)
+            .putInt("scriptY", s.overlay.scriptY)
+            .putFloat("scriptBg", s.overlay.scriptBg)
+            .putFloat("scriptInk", s.overlay.scriptInk)
+            .putBoolean("scriptAttach", s.overlay.scriptAttach)
+            .putBoolean("scriptBelow", s.overlay.scriptBelow)
             .apply()
     }
 }

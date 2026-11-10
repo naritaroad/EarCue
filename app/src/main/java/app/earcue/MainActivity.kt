@@ -12,6 +12,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import app.earcue.data.DeckButton
+import app.earcue.overlay.OverlayService
 import app.earcue.ui.AppRoot
 
 class MainActivity : ComponentActivity() {
@@ -31,12 +32,20 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
+        app.inForeground.value = true
         app.engine.setSessionActive(true)
         app.engine.refreshOutput()
+        OverlayService.sync(this)
+    }
+
+    override fun onStop() {
+        app.inForeground.value = false
+        super.onStop()
     }
 
     override fun onDestroy() {
-        if (isFinishing) app.engine.setSessionActive(false)
+        // Earphone buttons keep working while the floating controls are up.
+        if (isFinishing && !OverlayService.running.value) app.engine.setSessionActive(false)
         super.onDestroy()
     }
 

@@ -57,7 +57,7 @@ import androidx.compose.ui.unit.dp
 import app.earcue.Notice
 import kotlinx.coroutines.delay
 
-enum class G { NEXT, PREV, PLAY, STOP, LIST, LIBRARY, STAGE, LAYOUT, SETTINGS, BACK, PLUS, TRASH, MIC, CHECK, HAND, PASTE, FILE, SPARK, CLOSE, SEARCH, HISTORY, TAG, CHEVRON, GLOBE, SUN }
+enum class G { NEXT, PREV, PLAY, STOP, LIST, LIBRARY, STAGE, LAYOUT, SETTINGS, BACK, PLUS, TRASH, MIC, CHECK, HAND, PASTE, FILE, SPARK, CLOSE, SEARCH, HISTORY, TAG, CHEVRON, GLOBE, SUN, GRIP, FLOAT, OPEN }
 
 /** Hand-drawn line icons on a 24-unit grid, so the whole app shares one stroke weight. */
 @Composable
@@ -188,6 +188,18 @@ private fun DrawScope.drawGlyph(g: G, c: Color, bg: Color) {
                 val cy = kotlin.math.sin(a).toFloat()
                 drawLine(c, Offset(12f + cx * 7f, 12f + cy * 7f), Offset(12f + cx * 9.5f, 12f + cy * 9.5f), 2.1f, StrokeCap.Round)
             }
+        }
+        G.GRIP -> {
+            for (cx in listOf(9f, 15f)) for (cy in listOf(6f, 12f, 18f)) drawCircle(c, 1.7f, Offset(cx, cy))
+        }
+        G.FLOAT -> {
+            drawRoundRect(c, Offset(3.5f, 4f), Size(17f, 16f), CornerRadius(2.5f), style = line)
+            drawRoundRect(c, Offset(11f, 11f), Size(7f, 6f), CornerRadius(1.5f))
+        }
+        G.OPEN -> {
+            drawPath(path(10f to 4.5f, 4.5f to 4.5f, 4.5f to 19.5f, 19.5f to 19.5f, 19.5f to 14f), c, style = line)
+            drawPath(path(13.5f to 4.5f, 19.5f to 4.5f, 19.5f to 10.5f), c, style = line)
+            drawLine(c, Offset(19f, 5f), Offset(11f, 13f), 2.1f, StrokeCap.Round)
         }
         G.SPARK -> {
             drawPath(Path().apply {

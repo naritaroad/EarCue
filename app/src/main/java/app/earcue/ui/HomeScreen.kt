@@ -101,7 +101,7 @@ fun HomeScreen(app: EarCueApp, st: EngineState, settings: Settings, go: (Screen)
     }
 }
 
-private fun nextPreview(st: EngineState, settings: Settings): String {
+fun nextPreview(st: EngineState, settings: Settings): String {
     val start = if (st.played) st.index + 1 else st.index
     return st.cues.drop(start).firstOrNull { settings.speakPartner || !it.isPartner }?.text.orEmpty()
 }

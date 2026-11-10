@@ -76,8 +76,9 @@ fun Deck(
     }
 }
 
+/** Fires [onPress] on touch-down and [onRelease] when the finger lifts or the gesture is cancelled. */
 @Composable
-private fun PressKey(onPress: () -> Unit, onRelease: () -> Unit, modifier: Modifier, content: @Composable (Boolean) -> Unit) {
+fun PressKey(onPress: () -> Unit, onRelease: () -> Unit, modifier: Modifier, content: @Composable (Boolean) -> Unit) {
     var pressed by remember { mutableStateOf(false) }
     val fire by rememberUpdatedState(onPress)
     val lift by rememberUpdatedState(onRelease)

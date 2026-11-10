@@ -25,6 +25,7 @@ Um ponto eletrônico para Android que lê sua fala nos fones, uma frase por toqu
 - **Proteção dos fones**: sem fones conectados ou com o volume de mídia em 0, os botões de reprodução vibram três vezes e não tocam nada. Tirar os fones no meio interrompe a reprodução.
 - **Controle com um polegar**: três layouts de botões, edição arrastando para mover e redimensionar com restauração, espelho para canhotos e destros, e um modo Palco preto para o celular nas costas.
 - **Botões físicos**: obturador Sony (pressionar = próximo, segurar = continuar avançando), teclas de volume opcionais e botões de fones com fio ou Bluetooth.
+- **Controles flutuantes**: mantenha Próximo, Anterior e Tocar sobre o app de slides ou qualquer outro. Quatro estilos (barra, coluna lateral, cartão, bolha), escolha quais botões e informações mostrar e ajuste o tamanho dos botões e do texto, a largura do cartão e a opacidade. O texto do roteiro também pode flutuar; ele não recebe toques, então o app de baixo continua usável. A posição e o tamanho dos dois se ajustam arrastando numa tela em miniatura nas configurações, ou o roteiro se junta aos botões para se moverem juntos. Somem quando você volta ao EarCue.
 - **Vozes**: texto para fala do Android com velocidade 0,25×–2,00×, troca entre voz feminina e masculina, seis vozes prontas, voz e tom próprios para as falas do parceiro, destaque palavra por palavra ou sua própria gravação por frase.
 - **Biblioteca de roteiros**: armazenamento local em SQLite com busca por título, tags e texto, filtros por tag e histórico no estilo git: atualize um roteiro com um arquivo novo e restaure qualquer revisão anterior.
 - **Skill de conversão com IA**: `skills/earcue-script` transforma uma transcrição em Word, PDF ou slides em um `.earcue.json` com tags e confere palavra por palavra com o original.
@@ -70,7 +71,7 @@ Cada importação vira uma revisão do roteiro, e a revisão atual é expandida 
 | Armazenamento | `SQLiteOpenHelper` da plataforma (sem ORM), SharedPreferences para ajustes |
 | Voz | `TextToSpeech`, `MediaPlayer` para gravações próprias, `MediaSession` para botões dos fones |
 | Build | Android Gradle Plugin 8.7.3, Gradle 8.11.1, compileSdk 35, minSdk 26 |
-| APK de release | cerca de 1,4 MB, reduzido com R8 |
+| APK de release | cerca de 1,5 MB, reduzido com R8 |
 
 </details>
 
@@ -109,6 +110,9 @@ Um formato de texto simples para colar também é aceito. Especificação comple
 |---|---|
 | `VIBRATE` | Resposta tátil e aviso de proteção dos fones |
 | `RECORD_AUDIO` | Só ao gravar sua própria voz para uma frase; pedida nesse momento |
+| `SYSTEM_ALERT_WINDOW` | Controles flutuantes sobre outros apps; você concede nas configurações do sistema |
+| `FOREGROUND_SERVICE_MEDIA_PLAYBACK` | Mantém a voz e os controles flutuantes funcionando enquanto outro app está na frente |
+| `POST_NOTIFICATIONS` | A notificação que mostra que os controles flutuantes estão ligados e permite desligá-los |
 
 O app não declara permissão de internet. Vozes TTS online são baixadas pelo mecanismo de voz, não pelo EarCue.
 
@@ -131,7 +135,7 @@ Guia completo, incluindo a configuração da skill de IA: [docs/installation.md]
 ```
 EarCue/
 ├── app/src/main/
-│   ├── java/app/earcue/   # audio/ data/ ui/
+│   ├── java/app/earcue/   # audio/ data/ overlay/ ui/
 │   └── res/               # icons, strings × 10 languages (generated)
 ├── skills/earcue-script/  # AI conversion skill
 ├── examples/green-streets/# fictional demo
